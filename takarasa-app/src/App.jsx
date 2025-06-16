@@ -9,6 +9,8 @@ import RegisterPage from "./pages/RegisterPage";
 import VerifyOtpPage from "./pages/VerifyOtpPage";
 import Dashboard from "./pages/Dashboard";
 import Belajar from "./pages/Belajar";
+import BelajarBahasaIsyaratPage from "./pages/BelajarBahasaIsyaratPage";
+import DetailBelajarBahasaIsyaratPage from "./pages/DetailBelajarBahasaIsyaratPage";
 import IsyaratKeTulisanPage from "./pages/IsyaratKeTulisanPage";
 import { KameraPage } from "./pages/KameraPage";
 import { HasilIsyaratPage } from "./pages/HasilIsyaratPage";
@@ -27,7 +29,14 @@ export default function App() {
                 <Route path="/verify-otp" element={<VerifyOtpPage />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/belajar" element={<Belajar />} />
-                {/* Alur Isyarat ke Tulisan */}
+                <Route
+                    path="/belajar-bahasa-isyarat"
+                    element={<BelajarBahasaIsyaratPage />}
+                />
+                <Route
+                    path="/detail-belajar-bahasa-isyarat"
+                    element={<DetailBelajarBahasaIsyaratPage />}
+                />
                 <Route
                     path="/terjemahan-isyarat"
                     element={<IsyaratKeTulisanPage />}
@@ -36,7 +45,6 @@ export default function App() {
                     path="/terjemahan-isyarat/kamera"
                     element={<KameraPage />}
                 />{" "}
-                {/* Buat Komponen ini */}
                 <Route
                     path="/terjemahan-isyarat/hasil"
                     element={<HasilIsyaratPage />}
