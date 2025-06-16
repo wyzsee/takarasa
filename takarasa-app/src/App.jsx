@@ -14,6 +14,7 @@ import { KameraPage } from "./pages/KameraPage";
 import { HasilIsyaratPage } from "./pages/HasilIsyaratPage";
 // import TulisanKeIsyaratPage from "./pages/TulisanKeIsyaratPage";
 import TestCam from "./pages/TestCam";
+import Informasi from "./pages/Informasi";
 
 export default function App() {
     return (
@@ -44,8 +45,9 @@ export default function App() {
                 {/* <Route
                     path="/terjemahan-tulisan"
                     element={<TulisanKeIsyaratPage />}
-                /> */}
+                    /> */}
                 <Route path="/test-cam" element={<TestCam />} />
+                <Route path="/informasi" element={<Informasi />} />
             </Routes>
         </Router>
     );
