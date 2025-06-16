@@ -7,11 +7,12 @@ import eventPhoto from "@/assets/img/event photo.jpg";
 import { Clock, MapPinLine } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import api from "../api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const [userName, setUserName] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getUser() {
@@ -144,6 +145,7 @@ export default function Dashboard() {
                 type="submit"
                 className="w-1/2 h-12 bg-grey-100 text-xs text-white rounded-full py-3 font-semibold ease-in-out duration-300 hover:bg-grey-80"
                 disabled={loading}
+                onClick={() => navigate("/text-to-sign")}
               >
                 {loading ? "Memproses..." : "Tulisan ke Bahasa Isyarat"}
               </Button>
