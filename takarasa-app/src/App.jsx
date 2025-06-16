@@ -12,7 +12,8 @@ import Belajar from "./pages/Belajar";
 import IsyaratKeTulisanPage from "./pages/IsyaratKeTulisanPage";
 import { KameraPage } from "./pages/KameraPage";
 import { HasilIsyaratPage } from "./pages/HasilIsyaratPage";
-// import TulisanKeIsyaratPage from "./pages/TulisanKeIsyaratPage";
+import Text2Sign from './pages/Text2Sign';
+import Text2SignResult from './pages/Text2SignResult';
 import TestCam from "./pages/TestCam";
 import Informasi from "./pages/Informasi";
 
@@ -40,12 +41,10 @@ export default function App() {
                     path="/terjemahan-isyarat/hasil"
                     element={<HasilIsyaratPage />}
                 />{" "}
-                {/* Buat Komponen ini */}
-                {/* Alur Tulisan ke Isyarat */}
-                {/* <Route
-                    path="/terjemahan-tulisan"
-                    element={<TulisanKeIsyaratPage />}
-                    /> */}
+                
+                <Route path="/text-to-sign" element={<Text2Sign />} />
+                <Route path="/text-to-sign/result" element={<Text2SignResult />} />
+
                 <Route path="/test-cam" element={<TestCam />} />
                 <Route path="/informasi" element={<Informasi />} />
             </Routes>
