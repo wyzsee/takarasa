@@ -10,6 +10,10 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
 Route::post('/resend-otp', [AuthController::class, 'resendOtp']);
 Route::post('/gesture-detection', [GestureController::class, 'store']);
+// Endpoint untuk deteksi real-time (sudah ada)
+Route::post('/detect-sign', [GestureController::class, 'detect']);
+// Endpoint BARU untuk upload video
+Route::post('/upload-video-sign', [GestureController::class, 'uploadVideo']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

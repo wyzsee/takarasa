@@ -28,18 +28,20 @@ export default function IsyaratKeTulisanPage() {
     };
 
     return (
-        <div className="flex flex-col h-screen bg-white text-gray-800 font-jakarta">
-            <header className="flex items-center p-4">
-                <CaretLeft
-                    size={22}
+        <div className="flex flex-col mx-auto max-w-md justify-center items-center h-screen bg-white text-gray-800 font-jakarta">
+            <header className="relative flex items-center p-4">
+                <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() => navigate(-1)}
-                    className="cursor-pointer"
-                />{" "}{" "}
-                <h1 className="text-xl font-semibold mx-auto text-center">
+                    className="absolute -left-10 top-1/2 -translate-y-1/2"
+                >
+                    <CaretLeft size={24} className="h-6 w-6" />
+                </Button>
+
+                <h1 className="w-full text-center text-xl font-semibold">
                     Bahasa Isyarat ke Tulisan
                 </h1>
-                <div className="w-8"></div>{" "}
-                {/* Spacer untuk menyeimbangkan judul */}
             </header>
 
             <main className="flex-grow flex flex-col items-center justify-between py-8 gap-6">

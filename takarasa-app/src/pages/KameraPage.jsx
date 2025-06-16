@@ -1,5 +1,3 @@
-// src/pages/KameraPage.jsx
-
 import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -10,16 +8,15 @@ export function KameraPage() {
     const navigate = useNavigate();
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
-    const intervalRef = useRef(null); // Ref untuk menyimpan ID interval
+    const intervalRef = useRef(null);
+    const streamRef = useRef(null); // <-- Ref baru untuk menyimpan object stream
 
     const [prediction, setPrediction] = useState('');
     const [cameraError, setCameraError] = useState(null);
-    const [isCameraReady, setIsCameraReady] = useState(false);
 
-    // Fungsi untuk mengirim satu frame, didefinisikan di sini
+    // Fungsi untuk mengirim frame (tidak berubah)
     const sendFrameForDetection = () => {
         if (!videoRef.current || !canvasRef.current) return;
-
         const context = canvasRef.current.getContext('2d');
         context.drawImage(videoRef.current, 0, 0, 640, 480);
         const frameData = canvasRef.current.toDataURL('image/jpeg');
@@ -33,58 +30,52 @@ export function KameraPage() {
             })
             .catch(error => {
                 console.error("API Error:", error.message);
-                // Hentikan pengiriman jika ada error API agar tidak spam
                 if(intervalRef.current) clearInterval(intervalRef.current);
             });
     };
 
-    // useEffect 1: HANYA untuk setup kamera
+    // useEffect utama untuk mengelola kamera dan interval
     useEffect(() => {
         const enableCamera = async () => {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } });
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                // Simpan stream ke dalam ref agar bisa diakses saat cleanup
+                streamRef.current = stream; 
                 if (videoRef.current) {
                     videoRef.current.srcObject = stream;
-                    setIsCameraReady(true); // Tandai kamera sudah siap
+                    videoRef.current.onloadedmetadata = () => {
+                        // Mulai interval HANYA setelah kamera benar-benar siap
+                        intervalRef.current = setInterval(sendFrameForDetection, 1000);
+                    };
                 }
             } catch (err) {
                 console.error("Camera access error:", err);
-                setCameraError("Gagal mengakses kamera. Pastikan izin sudah diberikan dan refresh halaman.");
+                setCameraError("Gagal mengakses kamera. Pastikan izin sudah diberikan.");
             }
         };
 
         enableCamera();
 
-        // Fungsi Cleanup: Berjalan saat halaman ditutup
+        // Fungsi Cleanup yang sekarang lebih robust
         return () => {
-            if (videoRef.current && videoRef.current.srcObject) {
-                videoRef.current.srcObject.getTracks().forEach(track => track.stop());
-            }
+            console.log("Cleanup function is running...");
+            // Hentikan timer
             if (intervalRef.current) {
                 clearInterval(intervalRef.current);
+                console.log("Interval cleared.");
+            }
+            // Matikan stream kamera menggunakan ref yang stabil
+            if (streamRef.current) {
+                streamRef.current.getTracks().forEach(track => track.stop());
+                console.log("Camera stream stopped.");
             }
         };
-    }, []); // <-- Array dependensi kosong, hanya berjalan sekali
+    }, []); // <-- Array dependensi kosong, memastikan ini berjalan sekali saat mount dan cleanup sekali saat unmount
 
-    // useEffect 2: HANYA untuk memulai & menghentikan interval deteksi
-    useEffect(() => {
-        if (isCameraReady) {
-            // Mulai interval jika kamera sudah siap
-            intervalRef.current = setInterval(sendFrameForDetection, 1000); // Kirim setiap 1 detik
-        }
-        
-        // Fungsi cleanup akan dijalankan jika komponen unmount
-        return () => {
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-            }
-        };
-    }, [isCameraReady]); // <-- Bergantung pada status `isCameraReady`
-
-    // Tampilan UI
+    // ... (kode UI Anda tidak berubah, sudah bagus)
     if (cameraError) {
         return (
-            <div className="flex flex-col h-screen bg-black text-white items-center justify-center text-center gap-4 p-4">
+             <div className="flex flex-col h-screen bg-black text-white items-center justify-center text-center gap-4 p-4">
                 <VideoOff className="w-16 h-16 text-red-500" />
                 <h2 className="text-xl font-semibold">Error Kamera</h2>
                 <p className="text-slate-400 max-w-xs">{cameraError}</p>

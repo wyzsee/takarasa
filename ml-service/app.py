@@ -1,4 +1,3 @@
-# 1. Impor semua library yang dibutuhkan
 import os
 import base64
 from collections import Counter
