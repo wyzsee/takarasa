@@ -1,22 +1,52 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import VerifyOtpPage from './pages/VerifyOtpPage';
-import Dashboard from './pages/Dashboard';
-import TestCam from './pages/TestCam';
-
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    Navigate,
+} from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import VerifyOtpPage from "./pages/VerifyOtpPage";
+import Dashboard from "./pages/Dashboard";
+import Belajar from "./pages/Belajar";
+import IsyaratKeTulisanPage from "./pages/IsyaratKeTulisanPage";
+import { KameraPage } from "./pages/KameraPage";
+import { HasilIsyaratPage } from "./pages/HasilIsyaratPage";
+// import TulisanKeIsyaratPage from "./pages/TulisanKeIsyaratPage";
+import TestCam from "./pages/TestCam";
 
 export default function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/verify-otp" element={<VerifyOtpPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/test-cam" element={<TestCam />} />
-      </Routes>
-    </Router>
-  );
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<Navigate to="/login" replace />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/verify-otp" element={<VerifyOtpPage />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/belajar" element={<Belajar />} />
+                {/* Alur Isyarat ke Tulisan */}
+                <Route
+                    path="/terjemahan-isyarat"
+                    element={<IsyaratKeTulisanPage />}
+                />
+                <Route
+                    path="/terjemahan-isyarat/kamera"
+                    element={<KameraPage />}
+                />{" "}
+                {/* Buat Komponen ini */}
+                <Route
+                    path="/terjemahan-isyarat/hasil"
+                    element={<HasilIsyaratPage />}
+                />{" "}
+                {/* Buat Komponen ini */}
+                {/* Alur Tulisan ke Isyarat */}
+                {/* <Route
+                    path="/terjemahan-tulisan"
+                    element={<TulisanKeIsyaratPage />}
+                /> */}
+                <Route path="/test-cam" element={<TestCam />} />
+            </Routes>
+        </Router>
+    );
 }

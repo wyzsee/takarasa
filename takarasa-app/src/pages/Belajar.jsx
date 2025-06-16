@@ -1,10 +1,8 @@
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/ui/Navbar";
 import logo from "@/assets/img/logo.png";
-import animasiHome from "@/assets/img/animasi home.png";
-import bookHome from "@/assets/img/book dashboard icon.png";
-import eventPhoto from "@/assets/img/event photo.jpg";
-import { Clock, MapPinLine } from "@phosphor-icons/react";
+import ProfilePicture from "@/assets/img/profile_picture.jpg";
+import { CaretRight, CoinVertical } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import api from "../api";
 import { Link } from "react-router-dom";
@@ -27,7 +25,7 @@ export default function Dashboard() {
 
     return (
         <>
-            <div className="relative max-w-md min-h-screen font-jakarta flex flex-col items-center justify-center mx-auto overflow-hidden px-6">
+            <div className="relative max-w-md h-screen font-jakarta flex flex-col items-center justify-center mx-auto overflow-hidden px-6">
                 {/* Background SVG dengan posisi absolute */}
                 <div className="absolute inset-0 -z-20 pointer-events-none">
                     <svg
@@ -114,7 +112,34 @@ export default function Dashboard() {
                     </svg>
                 </div>
 
-                <div className="container flex flex-col items-center mx-auto gap-4 mb-24">
+                <svg
+                    className="absolute -top-10 -z-10"
+                    width="430"
+                    height="306"
+                    viewBox="0 0 430 306"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M0 0H430V227.622C258.122 332.698 164.357 331.553 0 227.622V0Z"
+                        fill="url(#paint0_linear_192_3935)"
+                    />
+                    <defs>
+                        <linearGradient
+                            id="paint0_linear_192_3935"
+                            x1="215"
+                            y1="0"
+                            x2="215"
+                            y2="322.755"
+                            gradientUnits="userSpaceOnUse"
+                        >
+                            <stop stop-color="#E9E5F5" />
+                            <stop offset="1" stop-color="#ADA8D5" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+
+                <div className="container flex flex-col items-center mx-auto gap-4 mb-24 h-full">
                     <div className="flex justify-between items-center w-full">
                         <h1 className="text-xl font-semibold text-grey-100">
                             Halo, {userName}!
@@ -123,49 +148,23 @@ export default function Dashboard() {
                             <img src={logo} alt="Logo Takarasa" />
                         </div>
                     </div>
-
-                    <div className="flex flex-col bg-brand-primary w-full h-full p-4 rounded-2xl gap-3">
-                        <h1 className="text-xl font-semibold text-grey-10 text-center">
-                            Terjemahan
-                        </h1>
-                        <div className="flex justify-between">
-                            <p className="w-[70%] text-base font-medium text-grey-10">
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipisicing elit. Deserunt nostrum neque animi
-                                harum accusamus. Accusantium temporibus hic.
-                            </p>
-                            <div className="">
-                                <img src={animasiHome} alt="" />
-                            </div>
+                    <div className="flex flex-col justify-center items-center gap-2 mb-6">
+                        <div className="h-[100px] w-[100px] rounded-full">
+                            <img
+                                src={ProfilePicture}
+                                alt="Profile Picture"
+                                className="w-24 h-24 object-cover rounded-full"
+                            />
                         </div>
-                        <div className="flex max-w-full gap-2">
-                            <Button
-                                asChild
-                                type="submit"
-                                className="w-1/2 h-12 bg-grey-100 text-xs text-white rounded-full py-3 font-semibold ease-in-out duration-300 hover:bg-grey-80"
-                                disabled={loading}
-                            >
-                                <Link to="/terjemahan-isyarat">
-                                    {loading
-                                        ? "Memproses..."
-                                        : "Bahasa Isyarat ke Tulisan"}
-                                </Link>
-                            </Button>
-                            <Button
-                                asChild
-                                type="submit"
-                                className="w-1/2 h-12 bg-grey-100 text-xs text-white rounded-full py-3 font-semibold ease-in-out duration-300 hover:bg-grey-80"
-                                disabled={loading}
-                            >
-                                <Link to="/terjemahan-tulisan">
-                                    {loading
-                                        ? "Memproses..."
-                                        : "Tulisan ke Bahasa Isyarat"}
-                                </Link>
-                            </Button>
+                        <h1 className="text-xs font-bold text-grey-100">
+                            {userName}
+                        </h1>
+                        <div className="flex justify-center items-center gap-1 w-28 h-8 bg-brand-accent rounded-full text-white">
+                            <CoinVertical size={16} />
+                            <p className="text-xs font-bold">200 Poin</p>
+                            <CaretRight size={16} />
                         </div>
                     </div>
-
                     <div className="flex flex-col w-full bg-grey-10 p-4 rounded-2xl gap-3">
                         <div className="flex w-full items-center justify-between">
                             <h1 className="text-xl text-grey-100 font-semibold text-left">
@@ -225,103 +224,6 @@ export default function Dashboard() {
                                         <feGaussianBlur
                                             stdDeviation="22.5"
                                             result="effect1_foregroundBlur_155_1705"
-                                        />
-                                    </filter>
-                                </defs>
-                            </svg>
-                            <div className="pr-8 z-10">
-                                <img src={bookHome} alt="" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col w-full bg-grey-10 p-4 rounded-2xl gap-3 relative overflow-hidden">
-                        <div className="flex w-full items-center justify-between">
-                            <h1 className="text-xl text-grey-100 font-semibold text-left">
-                                Informasi
-                            </h1>
-                            <div>
-                                <a
-                                    href=""
-                                    className="text-xs text-right underline text-brand-primary"
-                                >
-                                    Lihat Selengkapnya
-                                </a>
-                            </div>
-                        </div>
-                        <div className="w-[350px] h-[157px]">
-                            <img
-                                src={eventPhoto}
-                                className="w-full h-full object-cover object-bottom rounded-lg"
-                                alt=""
-                            />
-                        </div>
-                        <p className="text-base font-medium text-grey-100">
-                            Nama Event
-                        </p>
-
-                        <div className="flex gap-3">
-                            <div className="flex items-center text-grey-50 gap-1">
-                                <Clock size={14} />
-                                <p className="text-xs font-normal">12:00</p>
-                            </div>
-                            <div className="flex items-center text-grey-50 gap-1">
-                                <MapPinLine size={14} />
-                                <p className="text-xs font-normal">Kota Lama</p>
-                            </div>
-                        </div>
-
-                        <div className="flex relative justify-between items-center">
-                            <p className="w-[70%] text-xs font-normal text-grey-100">
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipisicing elit...
-                            </p>
-                            <Button
-                                type="submit"
-                                className="w-1/2 h-12 bg-grey-100 text-xs text-white rounded-full py-3 font-semibold ease-in-out duration-300 hover:bg-grey-80 z-10"
-                                disabled={loading}
-                            >
-                                {loading ? "Memproses..." : "Selengkapnya"}
-                            </Button>
-                            <svg
-                                width="199"
-                                height="189"
-                                viewBox="0 0 199 189"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="absolute -z-1 -right-5 -bottom-5"
-                            >
-                                <g filter="url(#filter0_f_155_1852)">
-                                    <circle
-                                        cx="149"
-                                        cy="149"
-                                        r="50"
-                                        fill="#FFB367"
-                                    />
-                                </g>
-                                <defs>
-                                    <filter
-                                        id="filter0_f_155_1852"
-                                        x="0"
-                                        y="0"
-                                        width="298"
-                                        height="298"
-                                        filterUnits="userSpaceOnUse"
-                                        color-interpolation-filters="sRGB"
-                                    >
-                                        <feFlood
-                                            flood-opacity="0"
-                                            result="BackgroundImageFix"
-                                        />
-                                        <feBlend
-                                            mode="normal"
-                                            in="SourceGraphic"
-                                            in2="BackgroundImageFix"
-                                            result="shape"
-                                        />
-                                        <feGaussianBlur
-                                            stdDeviation="49.5"
-                                            result="effect1_foregroundBlur_155_1852"
                                         />
                                     </filter>
                                 </defs>
