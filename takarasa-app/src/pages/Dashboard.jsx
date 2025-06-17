@@ -241,12 +241,12 @@ export default function Dashboard() {
                                 Informasi
                             </h1>
                             <div>
-                                <a
-                                    href=""
+                                <Link
+                                    to="/informasi"
                                     className="text-xs text-right underline text-brand-primary"
                                 >
                                     Lihat Selengkapnya
-                                </a>
+                                </Link>
                             </div>
                         </div>
                         <div className="w-[350px] h-[157px]">

@@ -15,6 +15,9 @@ import { HasilIsyaratPage } from "./pages/HasilIsyaratPage";
 // import TulisanKeIsyaratPage from "./pages/TulisanKeIsyaratPage";
 import TestCam from "./pages/TestCam";
 import Informasi from "./pages/Informasi";
+import LayananJBI from "./pages/LayananJBIPage";
+import EventKegiatan from "./pages/EventKegiatanPage";
+import Komunitas from "./pages/KomunitasPage";
 
 export default function App() {
     return (
@@ -48,6 +51,9 @@ export default function App() {
                     /> */}
                 <Route path="/test-cam" element={<TestCam />} />
                 <Route path="/informasi" element={<Informasi />} />
+                <Route path="/layanan-jbi" element={<LayananJBI/>}/>
+                <Route path="/event-kegiatan" element={<EventKegiatan />} />
+                <Route path="/komunitas" element={<Komunitas />} />
             </Routes>
         </Router>
     );
