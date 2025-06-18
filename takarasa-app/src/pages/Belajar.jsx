@@ -717,12 +717,9 @@ export default function Dashboard() {
                                 Bermain Bersama Taka
                             </h1>
                             <div>
-                                <a
-                                    href=""
-                                    className="text-xs text-right underline text-brand-primary"
-                                >
+                                <Link to="/kuis" className="text-xs text-right underline text-brand-primary">
                                     Lihat Selengkapnya
-                                </a>
+                                </Link>
                             </div>
                         </div>
                         <p className="text-base text-grey-100">

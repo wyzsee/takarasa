@@ -18,6 +18,9 @@ import Text2Sign from './pages/Text2Sign';
 import Text2SignResult from './pages/Text2SignResult';
 import TestCam from "./pages/TestCam";
 import Informasi from "./pages/Informasi";
+import Kuis from "./pages/Kuis";
+import KuisDetail from "./pages/KuisDetail";
+import KuisKonten from "./pages/KuisKonten";
 
 export default function App() {
     return (
@@ -55,6 +58,10 @@ export default function App() {
 
                 <Route path="/test-cam" element={<TestCam />} />
                 <Route path="/informasi" element={<Informasi />} />
+
+                <Route path="/kuis" element={<Kuis />} />
+                <Route path="/kuis/alfabet" element={<KuisDetail />} />
+                <Route path="/kuis/alfabet/1" element={<KuisKonten />} />
             </Routes>
         </Router>
     );
