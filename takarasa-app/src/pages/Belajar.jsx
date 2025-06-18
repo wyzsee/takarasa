@@ -11,7 +11,7 @@ import { Outlet, Link, useLocation } from "react-router-dom";
 export default function Dashboard() {
     const [userName, setUserName] = useState("");
     const [loading, setLoading] = useState(false);
-    const isBelajarIndex = location.pathname === '/belajar';
+    const isBelajarIndex = location.pathname === "/belajar";
 
     useEffect(() => {
         async function getUser() {
@@ -162,11 +162,13 @@ export default function Dashboard() {
                         <h1 className="text-xs font-bold text-grey-100">
                             {userName}
                         </h1>
-                        <div className="flex justify-center items-center gap-1 w-28 h-8 bg-brand-accent rounded-full text-white">
-                            <CoinVertical size={16} />
-                            <p className="text-xs font-bold">200 Poin</p>
-                            <CaretRight size={16} />
-                        </div>
+                        <Link to="/penukaran-poin">
+                            <div className="flex justify-center items-center gap-1 w-28 h-8 bg-brand-accent rounded-full text-white">
+                                <CoinVertical size={16} weight="fill" />
+                                <p className="text-xs font-bold">200 Poin</p>
+                                <CaretRight size={16} />
+                            </div>
+                        </Link>
                     </div>
                     <div className="flex flex-col w-full bg-grey-10 p-4 rounded-2xl gap-3">
                         <div className="flex w-full items-center justify-between">
@@ -174,7 +176,10 @@ export default function Dashboard() {
                                 Belajar Bahasa Isyarat
                             </h1>
                             <div>
-                                <Link to="/belajar-bahasa-isyarat" className="text-xs text-right underline text-brand-primary">
+                                <Link
+                                    to="/belajar-bahasa-isyarat"
+                                    className="text-xs text-right underline text-brand-primary"
+                                >
                                     Lihat Selengkapnya
                                 </Link>
                             </div>
@@ -717,12 +722,12 @@ export default function Dashboard() {
                                 Bermain Bersama Taka
                             </h1>
                             <div>
-                                <a
-                                    href=""
+                                <Link
+                                    to="/bermain-bersama-taka"
                                     className="text-xs text-right underline text-brand-primary"
                                 >
                                     Lihat Selengkapnya
-                                </a>
+                                </Link>
                             </div>
                         </div>
                         <p className="text-base text-grey-100">

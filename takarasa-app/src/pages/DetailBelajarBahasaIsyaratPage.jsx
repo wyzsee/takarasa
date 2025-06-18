@@ -4,9 +4,8 @@ import { Progress } from "@/components/ui/progress";
 import api from "../api";
 import { Link } from "react-router-dom";
 
-export default function Dashboard() {
+export default function DetailBelajarBahasaIsyaratPage() {
     const [userName, setUserName] = useState("");
-    const [loading, setLoading] = useState(false);
     const alphabet = Array.from({ length: 26 }).map((_, i) =>
         String.fromCharCode(65 + i)
     );

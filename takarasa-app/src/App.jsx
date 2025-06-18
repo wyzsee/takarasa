@@ -10,7 +10,12 @@ import VerifyOtpPage from "./pages/VerifyOtpPage";
 import Dashboard from "./pages/Dashboard";
 import Belajar from "./pages/Belajar";
 import BelajarBahasaIsyaratPage from "./pages/BelajarBahasaIsyaratPage";
+import BermainBersamaTakaPage from "./pages/BermainBersamaTakaPage";
 import DetailBelajarBahasaIsyaratPage from "./pages/DetailBelajarBahasaIsyaratPage";
+import PenukaranPoinPage from "./pages/PenukaranPoinPage";
+import RiwayatPenukaranPoinPage from "./pages/RiwayatPenukaranPoinPage";
+import VoucherDimilikiPage from "./pages/VoucherDimilikiPage";
+import DetailVoucherPage from "./pages/DetailVoucherPage";
 import IsyaratKeTulisanPage from "./pages/IsyaratKeTulisanPage";
 import { KameraPage } from "./pages/KameraPage";
 import { HasilIsyaratPage } from "./pages/HasilIsyaratPage";
@@ -34,8 +39,28 @@ export default function App() {
                     element={<BelajarBahasaIsyaratPage />}
                 />
                 <Route
+                    path="/bermain-bersama-taka"
+                    element={<BermainBersamaTakaPage />}
+                />
+                <Route
                     path="/detail-belajar-bahasa-isyarat"
                     element={<DetailBelajarBahasaIsyaratPage />}
+                />
+                <Route
+                    path="/penukaran-poin"
+                    element={<PenukaranPoinPage />}
+                />
+                <Route
+                    path="/riwayat-penukaran-poin"
+                    element={<RiwayatPenukaranPoinPage />}
+                />
+                <Route
+                    path="/voucher-dimiliki"
+                    element={<VoucherDimilikiPage />}
+                />
+                <Route
+                    path="/detail-voucher"
+                    element={<DetailVoucherPage />}
                 />
                 <Route
                     path="/terjemahan-isyarat"

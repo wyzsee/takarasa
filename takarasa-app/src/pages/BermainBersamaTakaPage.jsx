@@ -1,5 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { CaretLeft } from "@phosphor-icons/react";
+import Navbar from "@/components/ui/Navbar";
+import logo from "@/assets/img/logo.png";
+import ProfilePicture from "@/assets/img/profile_picture.jpg";
+import { CaretLeft, CoinVertical } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import api from "../api";
@@ -118,7 +121,7 @@ export default function Dashboard() {
                     </Link>
 
                     <h1 className="w-full text-center text-xl font-semibold">
-                        Belajar Bahasa Isyarat
+                        Bermain Bersama Taka
                     </h1>
                 </header>
 
@@ -371,22 +374,21 @@ export default function Dashboard() {
                                         </svg>
                                         <div className="flex flex-col gap-1 items-center">
                                             <p className="text-base font-bold text-white">
-                                                Alfabet
+                                                Kuis Alfabet
                                             </p>
                                             <p className="text-xs font-normal text-grey-10">
-                                                26 Huruf
+                                                5 Soal
                                             </p>
                                         </div>
-                                        <div className="flex flex-col justify-center items-center gap-1 w-full">
+                                        <div className="flex flex-col justify-center items-center mt-2 gap-1 w-full">
                                             <div className="flex w-full justify-between">
                                                 <p className="text-xs font-normal text-grey-10">
-                                                    Progress
+                                                    Nilai
                                                 </p>
                                                 <p className="text-xs font-normal text-grey-10">
-                                                    20%
+                                                    0/100
                                                 </p>
                                             </div>
-                                            <Progress value={20} />
                                         </div>
                                         <Button
                                             asChild
@@ -394,7 +396,7 @@ export default function Dashboard() {
                                             className="w-full h-12 bg-grey-100 text-lg text-white rounded-full py-3 font-semibold ease-in-out duration-300 hover:bg-grey-80"
                                             disabled={loading}
                                         >
-                                            <Link to="/detail-belajar-bahasa-isyarat">
+                                            <Link to="">
                                                 {loading
                                                     ? "Memproses..."
                                                     : "Lihat"}
