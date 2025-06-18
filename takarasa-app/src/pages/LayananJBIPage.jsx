@@ -16,7 +16,7 @@ export default function InformationPage() {
             title: "Bambang Susanto S.Sos., M.Cs",
             description: "Ahli bahasa isyarat, inklusi disabilitas, dan teknologi aksesibel.",
             image: FotoBambang,
-            link: "/layanan-jbi-1",
+            link: "/detail-jbi",
         },
         {
             id: 2,

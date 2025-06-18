@@ -13,11 +13,11 @@ export default function LayananJBIPage() {
     const gatheringData = [
         {
             id: 1,
-            title: "Bambang Susanto S.Sos., M.Cs",
-            description: "Ahli bahasa isyarat, inklusi disabilitas, dan teknologi aksesibel.",
+            title: "Gathering Teman Tuli",
+            description: "Acara perkumpulan komunitas teman teman tuli banjarmasin",
             image: FotoBambang,
-            penyelenggara: "Bambang Susanto S.Sos., M.Cs",
-            link: "/GatheringEvent-1",
+            penyelenggara: "Diselenggarakan oleh Teman Tuli Banjarmasin",
+            link: "/detail-event",
         },
         {
             id: 2,
@@ -36,7 +36,7 @@ export default function LayananJBIPage() {
             description: "Pakar bahasa isyarat, edukator inklusi, dan inovator teknologi disabilitas.",
             image: FotoZuriri,
             penyelenggara: "Zuriri Roriri S.Sos., M.Cs",
-            link: "/Eventworkshop-1",
+            link: "/detail-workshop",
         },
         {
             id: 2,
@@ -90,17 +90,17 @@ export default function LayananJBIPage() {
                             <Link
                                 key={item.id}
                                 to={item.link}
-                                className="flex-shrink-0 flex flex-col w-[293px] h-[215px]  bg-[#C9C2E8] rounded-xl shadow-lg overflow-hidden transition-shadow hover:shadow-xl"
+                                className="flex-shrink-0 flex flex-col w-[293px] h-auto bg-[#C9C2E8] rounded-xl shadow-lg overflow-hidden transition-shadow hover:shadow-xl p-3"
                             >
                                 <img
                                     src={item.image}
                                     alt={item.title}
-                                    className="w-full h-[50%] object-cover rounded-t-xl"
+                                    className="w-full h-[50%] object-cover rounded-xl"
                                 />
-                                <div className="px-4 py-3 flex flex-col flex-grow">
-                                    <h3 className="text-md font-semibold text-grey-900 mb-1">{item.title}</h3>
-                                    <p className="text-xs text-grey-600 flex-grow">{item.description}</p>
-                                    <p className="text-xs text-grey-500 mt-2 flex items-center">
+                                <div className="pt-3 flex flex-col flex-grow">
+                                    <h3 className="text-md font-semibold text-grey-90 mb-1">{item.title}</h3>
+                                    <p className="text-xs text-grey-90 flex-grow">{item.description}</p>
+                                    <p className="text-xs text-grey-90 flex items-center flex-grow ">
                                         <MapPinLine size={16} className="mr-1" />
                                         {item.penyelenggara}
                                     </p>
@@ -111,23 +111,23 @@ export default function LayananJBIPage() {
                 </section>
 
                 <section className="mb-8">
-                    <h1 className="text-lg font-semibold text-grey-100 mb-4">Event & Workshop</h1>
+                    <h1 className="text-lg font-semibold text-grey-100 mb-4">Workshop</h1>
                     <div className="flex overflow-x-auto space-x-4 pl-2 pr-2 pb-4">
                         {workshopData.map((item) => (
                             <Link
                                 key={item.id}
                                 to={item.link}
-                                className="flex-shrink-0 flex flex-col w-[293px] h-[215px]  bg-[#C9C2E8] rounded-xl shadow-lg overflow-hidden transition-shadow hover:shadow-xl"
+                                className="flex-shrink-0 flex flex-col w-[293px] h-auto bg-[#C9C2E8] rounded-xl shadow-lg overflow-hidden transition-shadow hover:shadow-xl p-3"
                             >
                                 <img
                                     src={item.image}
                                     alt={item.title}
-                                    className="w-full h-[50%] object-cover rounded-t-xl"
+                                    className="w-full h-[50%] object-cover rounded-xl"
                                 />
-                                <div className="px-4 py-3 flex flex-col flex-grow">
-                                    <h3 className="text-md font-semibold text-grey-900 mb-1">{item.title}</h3>
-                                    <p className="text-xs text-grey-600 flex-grow">{item.description}</p>
-                                    <p className="text-xs text-grey-500 mt-2 flex items-center">
+                                <div className="pt-3 flex flex-col flex-grow">
+                                    <h3 className="text-md font-semibold text-grey-90 mb-1">{item.title}</h3>
+                                    <p className="text-xs text-grey-90 flex-grow">{item.description}</p>
+                                    <p className="text-xs text-grey-90 flex items-center flex-grow ">
                                         <MapPinLine size={16} className="mr-1" />
                                         {item.penyelenggara}
                                     </p>

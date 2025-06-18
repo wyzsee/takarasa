@@ -61,7 +61,7 @@ export default function LayananJBIPage() {
                 </h1>
             </header>
 
-            <main className="flex-grow w-full px-4 sm:px-6 pb-24 overflow-y-auto">
+            <main className="flex-grow w-full px-6 sm:px-6 pb-6 overflow-y-auto">
                 <div className="w-full space-y-4 mt-4">
                     {komunitasData.map((komunitas) => (
                         <a

@@ -18,6 +18,9 @@ import Informasi from "./pages/Informasi";
 import LayananJBI from "./pages/LayananJBIPage";
 import EventKegiatan from "./pages/EventKegiatanPage";
 import Komunitas from "./pages/KomunitasPage";
+import DetailJBI from "./pages/DetailJBI";
+import DetailEvent from"./pages/DetailEvent";
+import DetailWorkshop from "./pages/DetailWorkshop";
 
 export default function App() {
     return (
@@ -54,6 +57,9 @@ export default function App() {
                 <Route path="/layanan-jbi" element={<LayananJBI/>}/>
                 <Route path="/event-kegiatan" element={<EventKegiatan />} />
                 <Route path="/komunitas" element={<Komunitas />} />
+                <Route path="/detail-jbi" element={<DetailJBI />} />
+                <Route path="/detail-event" element={<DetailEvent />} />
+                <Route path="/detail-workshop" element={<DetailWorkshop />} />
             </Routes>
         </Router>
     );
