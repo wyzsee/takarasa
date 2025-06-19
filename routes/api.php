@@ -42,4 +42,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/kuis/{slug}/questions', [QuizController::class, 'getQuestions']);
     Route::post('/kuis/{slug}/submit', [QuizController::class, 'submitAnswers']);
 
+    // Edit Profile
+    Route::post('/user/update', [AuthController::class, 'updateProfile']);
+
+    // Logout
+    Route::post('/logout', [AuthController::class, 'logout']);
 });

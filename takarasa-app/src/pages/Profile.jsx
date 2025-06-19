@@ -7,16 +7,17 @@ import {
     UserGear,
     ShieldCheck,
     SignOut,
-    LockKey
+    LockKey,
 } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import api from "../api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Profile() {
     const [userName, setUserName] = useState("");
     const [userEmail, setUserEmail] = useState("");
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function getUser() {
@@ -30,6 +31,20 @@ export default function Profile() {
         }
         getUser();
     }, []);
+
+    // Handle Logout
+    const handleLogout = async () => {
+        try {
+            await api.post("/logout");
+            // Delete Token
+            localStorage.removeItem("auth_token");
+
+            delete api.defaults.headers.common["Authorization"];
+            navigate("/login", { replace: true });
+        } catch (err) {
+            console.error("Gagal logout:", err);
+        }
+    };
 
     return (
         <>
@@ -149,65 +164,63 @@ export default function Profile() {
                             Tentang Akun
                         </h1>
                         <Link to="/atur-profile">
-                        <div className="flex justify-between">
-                            <div className="flex gap-4 items-center">
-                                <UserGear size={24} />
-                                <p className="text-grey-100 text-sm">
-                                    Atur Profil
-                                </p>
+                            <div className="flex justify-between">
+                                <div className="flex gap-4 items-center">
+                                    <UserGear size={24} />
+                                    <p className="text-grey-100 text-sm">
+                                        Atur Profil
+                                    </p>
+                                </div>
+                                <CaretRight size={24} />
                             </div>
-                            <CaretRight size={24} />
-                        </div>
                         </Link>
                         <div className="border-b border-grey-100 w-full"></div>
                         <Link to="/hubungi-admin">
-                        <div className="flex justify-between">
-                            <div className="flex gap-4 items-center">
-                                <Headset size={24} />
-                                <p className="text-grey-100 text-sm">
-                                    Hubungi Admin Taka
-                                </p>
+                            <div className="flex justify-between">
+                                <div className="flex gap-4 items-center">
+                                    <Headset size={24} />
+                                    <p className="text-grey-100 text-sm">
+                                        Hubungi Admin Taka
+                                    </p>
+                                </div>
+                                <CaretRight size={24} />
                             </div>
-                            <CaretRight size={24} />
-                        </div>
                         </Link>
                         <div className="border-b border-grey-100 w-full"></div>
                         <h1 className="font-semibold text-xl text-grey-100 ">
                             Lainnya
                         </h1>
                         <Link to="/">
-                        <div className="flex justify-between">
-                            <div className="flex gap-4 items-center">
-                                <ShieldCheck size={24} />
-                                <p className="text-grey-100 text-sm">
-                                    Ketentuan Layanan
-                                </p>
+                            <div className="flex justify-between">
+                                <div className="flex gap-4 items-center">
+                                    <ShieldCheck size={24} />
+                                    <p className="text-grey-100 text-sm">
+                                        Ketentuan Layanan
+                                    </p>
+                                </div>
+                                <CaretRight size={24} />
                             </div>
-                            <CaretRight size={24} />
-                        </div>
                         </Link>
                         <div className="border-b border-grey-100 w-full"></div>
                         <Link to="/">
-                        <div className="flex justify-between">
-                            <div className="flex gap-4 items-center">
-                                <LockKey size={24} />
-                                <p className="text-grey-100 text-sm">
-                                    Kebijakan & Privasi
-                                </p>
+                            <div className="flex justify-between">
+                                <div className="flex gap-4 items-center">
+                                    <LockKey size={24} />
+                                    <p className="text-grey-100 text-sm">
+                                        Kebijakan & Privasi
+                                    </p>
+                                </div>
+                                <CaretRight size={24} />
                             </div>
-                            <CaretRight size={24} />
-                        </div>
                         </Link>
                         <div className="border-b border-grey-100 w-full"></div>
-                        <Link to="/">
-                        <div className="flex justify-between text-error">
-                            <div className="flex gap-4 items-center">
-                                <SignOut size={24} />
-                                <p className="text-sm">
-                                    Keluar
-                                </p>
+                        <Link onClick={handleLogout}>
+                            <div className="flex justify-between text-error">
+                                <div className="flex gap-4 items-center">
+                                    <SignOut size={24} />
+                                    <p className="text-sm">Keluar</p>
+                                </div>
                             </div>
-                        </div>
                         </Link>
                         <div className="border-b border-grey-100 w-full"></div>
                     </div>

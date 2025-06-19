@@ -16,28 +16,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-        $faker = \Faker\Factory::create();
-
-        $quizIds = Quiz::pluck('id')->toArray();
-
-        foreach(range(1, 5) as $index){
-            Question::create([
-                'media' => 'b.png',
-                'question' => 'Isyarat apakah ini?',
-                'option_1' => 'Huruf '. strtoupper($faker->randomLetter),
-                'option_2' => 'Huruf '. strtoupper($faker->randomLetter),
-                'option_3' => 'Huruf '. strtoupper($faker->randomLetter),
-                'option_4' => 'Huruf '. strtoupper($faker->randomLetter),
-                'answer' => $faker->numberBetween(1,4),
-                'quiz_id' => 4,
-            ]);
-        }
+        $this->call([
+            QuizSeeder::class,      // Ini harus dijalankan lebih dulu
+            QuestionSeeder::class,  // Baru ini dijalankan setelahnya
+            // ... seeder lainnya
+        ]);
 
     }
 }

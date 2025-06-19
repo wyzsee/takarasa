@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('alamat')->nullable();
             $table->string('no_telepon')->nullable();
             $table->string('password');
+            $table->string('foto_profil')->nullable();
             $table->string('otp')->nullable();
             $table->timestamp('otp_expiry')->nullable();
             $table->rememberToken();
