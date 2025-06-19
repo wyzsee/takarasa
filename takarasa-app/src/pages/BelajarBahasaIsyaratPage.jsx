@@ -1,8 +1,5 @@
 import { Button } from "@/components/ui/button";
-import Navbar from "@/components/ui/Navbar";
-import logo from "@/assets/img/logo.png";
-import ProfilePicture from "@/assets/img/profile_picture.jpg";
-import { CaretLeft, CoinVertical } from "@phosphor-icons/react";
+import { CaretLeft } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import api from "../api";
@@ -126,10 +123,10 @@ export default function Dashboard() {
                 </header>
 
                 <div className="container w-full flex flex-col items-center mx-auto gap-4 py-4 h-full">
-                    <div className="flex flex-wrap relative justify-between w-full items-center gap-3">
+                    <div className="flex flex-wrap relative justify-evenly w-full items-center gap-3">
                         {Array.from({ length: 8 }).map((_, index) => (
                             <div className="rounded-xl" key={index}>
-                                <div className="flex flex-col p-4 gap-1 w-48 bg-brand-primary rounded-xl">
+                                <div className="flex flex-col p-4 gap-1 w-44 bg-brand-primary rounded-xl">
                                     <div className="flex flex-col gap-2 justify-between items-center w-full">
                                         <svg
                                             width="28"

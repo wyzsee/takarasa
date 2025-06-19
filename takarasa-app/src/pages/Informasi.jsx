@@ -16,21 +16,21 @@ export default function InformationPage() {
             title: "Layanan Juru Bahasa Isyarat",
             description: "Temukan juru bahasa isyarat profesional untuk berbagai kebutuhan Anda, kapan pun dan di mana pun.",
             image: FotoLayananJBI,
-            link: "/informasi/1",
+            link: "/layanan-jbi",
         },
         {
             id: 2,
             title: "Event dan Kegiatan",
             description: "Ikuti berbagai acara menarik yang kami selenggarakan untuk memperluas pengetahuan dan jaringan Anda.",
             image: FotoEvent,
-            link: "/informasi/2",
+            link: "/event-kegiatan",
         },
         {
             id: 3,
             title: "Komunitas Teman Tuli",
             description: "Bergabunglah dengan komunitas yang ramah dan suportif untuk berbagi pengalaman dan cerita.",
             image: FotoKomunitas,
-            link: "/informasi/3",
+            link: "/komunitas",
         },
     ];
 
