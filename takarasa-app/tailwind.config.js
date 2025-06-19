@@ -16,7 +16,7 @@ module.exports = {
         brand: {
           primary: "#ADA8D5",
           accent: "#FFB367",
-          "primary-50": "#D4DOF2",
+          primary50: "#D4D0F2",
         },
         success: {
           DEFAULT: "#56C365",
