@@ -12,25 +12,20 @@ class VideoSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\SignVideo::create([
-        'title' => 'a',
-        'filename' => 'a.mp4'
-        ]);
-        \App\Models\SignVideo::create([
-        'title' => 'aku',
-        'filename' => 'aku.mp4'
-        ]);
-        \App\Models\SignVideo::create([
-        'title' => 'b',
-        'filename' => 'b.mp4'
-        ]);
-        \App\Models\SignVideo::create([
-        'title' => 'kamu',
-        'filename' => 'kamu.mp4'
-        ]);
-        \App\Models\SignVideo::create([
-        'title' => 'senin',
-        'filename' => 'senin.mp4'
-        ]);
+        $videos = [
+            ['title'=>'a', 'filename'=>'a.mp4'],
+            ['title'=>'b', 'filename'=>'b.mp4'],
+            ['title'=>'c', 'filename'=>'c.mp4'],
+            ['title'=>'aku', 'filename'=>'aku.mp4'],
+            ['title'=>'kamu', 'filename'=>'kamu.mp4'],
+            ['title'=>'mau', 'filename'=>'mau.mp4'],
+            ['title'=>'makan', 'filename'=>'makan.mp4'],
+            ['title'=>'terima kasih', 'filename'=>'terima_kasih.mp4'],
+            ['title'=>'senin', 'filename'=>'senin.mp4']
+        ];
+        
+        foreach ($videos as $video) {
+            \App\Models\SignVideo::updateOrCreate($video);
+        }
     }
 }

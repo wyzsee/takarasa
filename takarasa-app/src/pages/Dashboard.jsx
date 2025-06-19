@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/ui/Navbar";
 import logo from "@/assets/img/logo.png";
-import animasiHome from "@/assets/img/animasi home.png";
+import animasiHome from "@/assets/img/def_pose.png";
 import bookHome from "@/assets/img/book dashboard icon.png";
 import eventPhoto from "@/assets/img/event photo.jpg";
 import { Clock, MapPinLine } from "@phosphor-icons/react";
@@ -241,12 +241,12 @@ export default function Dashboard() {
                                 Informasi
                             </h1>
                             <div>
-                                <a
-                                    href=""
+                                <Link
+                                    to="/informasi"
                                     className="text-xs text-right underline text-brand-primary"
                                 >
                                     Lihat Selengkapnya
-                                </a>
+                                </Link>
                             </div>
                         </div>
                         <div className="w-[350px] h-[157px]">
