@@ -60,8 +60,8 @@ export default function App() {
                 <Route path="/informasi" element={<Informasi />} />
 
                 <Route path="/kuis" element={<Kuis />} />
-                <Route path="/kuis/alfabet" element={<KuisDetail />} />
-                <Route path="/kuis/alfabet/1" element={<KuisKonten />} />
+                <Route path="/kuis/:slug" element={<KuisDetail />} />
+                <Route path="/kuis/:slug/:id" element={<KuisKonten />} />
             </Routes>
         </Router>
     );

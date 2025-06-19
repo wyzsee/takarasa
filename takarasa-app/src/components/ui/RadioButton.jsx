@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function CustomRadioButton({ value, label, name, checked, onChange, loading }) {
+export default function CustomRadioButton({ value, optionLetter, label, name, checked, onChange, loading }) {
     return (
         <div className="w-full">
             <input
@@ -17,6 +17,7 @@ export default function CustomRadioButton({ value, label, name, checked, onChang
                 htmlFor={`${name}-${value}`}
                 className="px-6 flex justify-start items-center gap-4 w-full h-14 bg-grey-10 outline outline-2 outline-offset-[-2px]  outline-brand-primary text-lg text-brand-primary rounded-full py-3 font-semibold peer-checked:bg-brand-primary peer-checked:text-white peer-checked:outline-none"
             >
+                <p>{optionLetter}</p>
                 <p>{label}</p>
             </label>
         </div>
