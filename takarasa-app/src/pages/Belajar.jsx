@@ -722,10 +722,9 @@ export default function Dashboard() {
                                 Bermain Bersama Taka
                             </h1>
                             <div>
-                                <Link
-                                    to="/bermain-bersama-taka"
-                                    className="text-xs text-right underline text-brand-primary"
-                                >
+
+                                <Link to="/kuis" className="text-xs text-right underline text-brand-primary">
+
                                     Lihat Selengkapnya
                                 </Link>
                             </div>

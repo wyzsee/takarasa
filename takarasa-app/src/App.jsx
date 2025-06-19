@@ -23,12 +23,18 @@ import Text2Sign from './pages/Text2Sign';
 import Text2SignResult from './pages/Text2SignResult';
 import TestCam from "./pages/TestCam";
 import Informasi from "./pages/Informasi";
+
+import Kuis from "./pages/Kuis";
+import KuisDetail from "./pages/KuisDetail";
+import KuisKonten from "./pages/KuisKonten";
+
 import LayananJBI from "./pages/LayananJBIPage";
 import EventKegiatan from "./pages/EventKegiatanPage";
 import Komunitas from "./pages/KomunitasPage";
 import DetailJBI from "./pages/DetailJBI";
 import DetailEvent from"./pages/DetailEvent";
 import DetailWorkshop from "./pages/DetailWorkshop";
+
 
 export default function App() {
     return (
@@ -86,6 +92,11 @@ export default function App() {
 
                 <Route path="/test-cam" element={<TestCam />} />
                 <Route path="/informasi" element={<Informasi />} />
+
+                <Route path="/kuis" element={<Kuis />} />
+                <Route path="/kuis/alfabet" element={<KuisDetail />} />
+                <Route path="/kuis/alfabet/1" element={<KuisKonten />} />
+
                 <Route path="/layanan-jbi" element={<LayananJBI/>}/>
                 <Route path="/event-kegiatan" element={<EventKegiatan />} />
                 <Route path="/komunitas" element={<Komunitas />} />
