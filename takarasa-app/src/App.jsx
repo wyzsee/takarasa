@@ -104,6 +104,8 @@ export default function App() {
                 <Route path="/hubungi-admin" element={<HubungiAdminPage />} />
 
                 <Route path="/kuis" element={<Kuis />} />
+                <Route path="/kuis/:slug" element={<KuisDetail />} />
+                <Route path="/kuis/:slug/:id" element={<KuisKonten />} />
                 <Route path="/kuis/alfabet" element={<KuisDetail />} />
                 <Route path="/kuis/alfabet/1" element={<KuisKonten />} />
 

@@ -56,4 +56,9 @@ class User extends Authenticatable
             'tanggal_lahir' => 'date',
         ];
     }
+
+    public function scores()
+    {
+        return $this->hasMany(Score::class);
+    }
 }
