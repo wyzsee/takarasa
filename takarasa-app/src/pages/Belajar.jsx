@@ -734,7 +734,7 @@ export default function Dashboard() {
                             Lorem ipsum dolor sit amet consectetur, adipisicing
                             elit. Aliquid, eaque temporibus? tenetur eveniet?
                         </p>
-                        <div className="flex justify-center items-center">
+                        <div className="flex justify-center items-center gap-3">
                             <div className="rounded-md w-full">
                                 <div className="flex flex-col py-2 px-3 gap-[2px] bg-grey-20 rounded-t-md">
                                     <div className="flex justify-between w-full">

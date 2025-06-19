@@ -9,7 +9,7 @@ export default function Navbar() {
     { label: "Beranda", Icon: House, path: "/dashboard" },
     { label: "Belajar", Icon: BookBookmark, path: "/belajar" },
     { label: "Informasi", Icon: Megaphone, path: "/informasi" },
-    { label: "Profil", Icon: User, path: "/profil" },
+    { label: "Profil", Icon: User, path: "/profile" },
   ];
 
   return (

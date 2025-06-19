@@ -8,21 +8,27 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import VerifyOtpPage from "./pages/VerifyOtpPage";
 import Dashboard from "./pages/Dashboard";
+import { KameraPage } from "./pages/KameraPage";
+import { HasilIsyaratPage } from "./pages/HasilIsyaratPage";
+import Text2Sign from './pages/Text2Sign';
+import Text2SignResult from './pages/Text2SignResult';
+
 import Belajar from "./pages/Belajar";
 import BelajarBahasaIsyaratPage from "./pages/BelajarBahasaIsyaratPage";
-import BermainBersamaTakaPage from "./pages/BermainBersamaTakaPage";
 import DetailBelajarBahasaIsyaratPage from "./pages/DetailBelajarBahasaIsyaratPage";
 import PenukaranPoinPage from "./pages/PenukaranPoinPage";
 import RiwayatPenukaranPoinPage from "./pages/RiwayatPenukaranPoinPage";
 import VoucherDimilikiPage from "./pages/VoucherDimilikiPage";
 import DetailVoucherPage from "./pages/DetailVoucherPage";
 import IsyaratKeTulisanPage from "./pages/IsyaratKeTulisanPage";
-import { KameraPage } from "./pages/KameraPage";
-import { HasilIsyaratPage } from "./pages/HasilIsyaratPage";
-import Text2Sign from './pages/Text2Sign';
-import Text2SignResult from './pages/Text2SignResult';
-import TestCam from "./pages/TestCam";
+
 import Informasi from "./pages/Informasi";
+
+import Profile from "./pages/Profile";
+import AturProfilePage from "./pages/AturProfilePage";
+import HubungiAdminPage from "./pages/HubungiAdminPage";
+
+import TestCam from "./pages/TestCam";
 
 export default function App() {
     return (
@@ -37,10 +43,6 @@ export default function App() {
                 <Route
                     path="/belajar-bahasa-isyarat"
                     element={<BelajarBahasaIsyaratPage />}
-                />
-                <Route
-                    path="/bermain-bersama-taka"
-                    element={<BermainBersamaTakaPage />}
                 />
                 <Route
                     path="/detail-belajar-bahasa-isyarat"
@@ -80,6 +82,10 @@ export default function App() {
 
                 <Route path="/test-cam" element={<TestCam />} />
                 <Route path="/informasi" element={<Informasi />} />
+
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/atur-profile" element={<AturProfilePage />} />
+                <Route path="/hubungi-admin" element={<HubungiAdminPage />} />
             </Routes>
         </Router>
     );
