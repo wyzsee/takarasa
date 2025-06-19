@@ -76,15 +76,15 @@ export default function InformationPage() {
                                     src={info.image}
                                 />
                                 <div className="flex flex-col gap-3">
-                                    <h2 className="text-lg font-bold text-grey-90">
+                                    <h2 className="text-xl font-bold text-grey-90">
                                         {info.title}
                                     </h2>
-                                    <p className="text-sm text-grey-90">
+                                    <p className="text-base text-grey-90">
                                         {info.description}
                                     </p>
                                 </div>
                                 <div className="flex flex-col gap-3">
-                                    <h2 className="font-semibold text-lg text-gray-700">Pengalaman Profesional</h2>
+                                    <h2 className="font-semibold text-xl text-gray-700">Pengalaman Profesional</h2>
                                     <ul className="list-disc list-inside text-gray-600">
                                         {info.pengalaman.map((item, index) => (
                                             <li key={index}>
@@ -94,12 +94,12 @@ export default function InformationPage() {
                                     </ul>
                                 </div>
                                 <div className="flex flex-col gap-2 w-full">
-                                    <h2 className="font-semibold text-lg text-gray-700">
+                                    <h2 className="font-semibold text-xl text-gray-700">
                                         Harga Jasa
                                     </h2>
                                     <div className="flex flex-row gap-3">
                                         {info.harga.map((h, index) => (
-                                            <div key={index} className="bg-indigo-100 text-indigo-800 text-sm font-semibold px-4 py-2 rounded-lg">
+                                            <div key={index} className="bg-indigo-100 text-indigo-800 text-base font-semibold px-4 py-2 rounded-lg">
                                                 {/* Tampilkan jenis dan format tarif menjadi format Rupiah.toLocaleString sangat bagus untuk format mata uang.*/}
                                                 {h.jenis}: {h.tarif.toLocaleString('id-ID', {
                                                     style: 'currency',
@@ -125,7 +125,11 @@ export default function InformationPage() {
                     disabled={loading}
                     className="w-full h-[px:54] bg-grey-100 text-white hover:bg-grey-80 py-3 text-base font-semibold rounded-full"
                 >
-                    Pilih Juru Bahasa
+                    <Link to="/pesan-jbi">
+                        {loading
+                            ? "Memproses..."
+                            : "Pesan Juru Bahasa Isyarat"}
+                    </Link>
                 </Button>
             </footer>
         </div>

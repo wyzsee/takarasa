@@ -71,38 +71,38 @@ export default function InformationPage() {
                                     src={info.image}
                                 />
                                 <div className="flex flex-col gap-3">
-                                    <h2 className="text-lg font-bold text-grey-90">
+                                    <h2 className="text-xl font-bold text-grey-90">
                                         {info.title}
                                     </h2>
                                     <div className="flex bg-grey-50 w-full h-0.5"></div>
                                     <div className="flex flex-col gap-3">
-                                        <h2 className="text-lg font-bold text-grey-90">
+                                        <h2 className="text-xl font-bold text-grey-90">
                                             Deskripsi Kegiatan
                                         </h2>
-                                        <p className="text-sm text-grey-90">
+                                        <p className="text-base text-grey-90">
                                             {info.description}
                                         </p>
                                     </div>
                                     <div className="flex bg-grey-50 w-full h-0.5"></div>
                                     <div className="flex flex-col gap-3">
-                                        <h2 className="text-lg font-bold text-gray-800">
+                                        <h2 className="text-xl font-bold text-gray-800">
                                             Lokasi dan Pelaksanaan
                                         </h2>
                                         <div className="flex items-center gap-3 text-gray-700">
                                             <Calendar size={20} />
-                                            <span className="text-sm">{info.tanggal}</span>
+                                            <span className="text-base">{info.tanggal}</span>
                                         </div>
                                         <div className="flex items-center gap-3 text-gray-700">
                                             <MapPin size={20} />
-                                            <span className="text-sm">{info.lokasi}</span>
+                                            <span className="text-base">{info.lokasi}</span>
                                         </div>
                                     </div>
                                     <div className="flex bg-grey-50 w-full h-0.5"></div>
                                     <div className="flex flex-col gap-3">
-                                        <h2 className="text-lg font-bold text-gray-800">
+                                        <h2 className="text-xl font-bold text-gray-800">
                                             Penyelenggara
                                         </h2>
-                                        <p className="text-sm text-gray-700">
+                                        <p className="text-base text-gray-700">
                                             {info.penyelenggara}
                                         </p>
                                     </div>

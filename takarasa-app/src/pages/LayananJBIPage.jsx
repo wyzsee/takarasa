@@ -75,10 +75,10 @@ export default function InformationPage() {
                                     alt={info.title}
                                     src={info.image}
                                 />
-                                <h2 className="text-lg font-bold text-grey-10">
+                                <h2 className="text-xl font-bold text-grey-10">
                                     {info.title}
                                 </h2>
-                                <p className="text-sm text-grey-20">
+                                <p className="text-base text-grey-20">
                                     {info.description}
                                 </p>
                             </div>

@@ -34,6 +34,7 @@ import Komunitas from "./pages/KomunitasPage";
 import DetailJBI from "./pages/DetailJBI";
 import DetailEvent from"./pages/DetailEvent";
 import DetailWorkshop from "./pages/DetailWorkshop";
+import PesanJBI from "./pages/PemesananJBI";
 
 
 export default function App() {
@@ -103,6 +104,7 @@ export default function App() {
                 <Route path="/detail-jbi" element={<DetailJBI />} />
                 <Route path="/detail-event" element={<DetailEvent />} />
                 <Route path="/detail-workshop" element={<DetailWorkshop />} />
+                <Route path="/pesan-jbi" element={<PesanJBI />} />
             </Routes>
         </Router>
     );
