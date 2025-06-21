@@ -13,6 +13,7 @@ class QuizSeeder extends Seeder
      */
     public function run(): void
     {
+        \App\Models\Quiz::truncate();
         Quiz::create([
             'title' => 'Kuis Alfabet',
             'slug' => 'kuis-alfabet',

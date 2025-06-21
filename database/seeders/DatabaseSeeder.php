@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             QuizSeeder::class,      // Ini harus dijalankan lebih dulu
             QuestionSeeder::class,  // Baru ini dijalankan setelahnya
+            InterpreterSeeder::class,
             // ... seeder lainnya
         ]);
 

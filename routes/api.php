@@ -7,6 +7,8 @@ use App\Http\Controllers\API\QuizController;
 use App\Http\Controllers\API\QuestionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\InterpreterController;
+use App\Http\Controllers\Api\BookingController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -47,4 +49,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Logout
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    // Route untuk mendapatkan daftar semua Juru Bahasa Isyarat
+    Route::get('/interpreters', [InterpreterController::class, 'index']);
+
+    // Route untuk mendapatkan detail satu Juru Bahasa Isyarat
+    Route::get('/interpreters/{id}', [InterpreterController::class, 'show']);
+
+    // Route untuk membuat pemesanan baru
+    Route::post('/bookings', [BookingController::class, 'store'])->middleware('auth:sanctum');
 });
