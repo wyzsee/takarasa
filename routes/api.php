@@ -9,12 +9,19 @@ use App\Http\Controllers\API\VoucherController;
 use App\Http\Controllers\API\PointController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\InterpreterController;
+use App\Http\Controllers\Api\BookingController;
+use App\Http\Controllers\Api\AcaraController;
+use App\Http\Controllers\Api\CommunityController;
 
 // Authentication
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
 Route::post('/resend-otp', [AuthController::class, 'resendOtp']);
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/verify-password-otp', [AuthController::class, 'verifyPasswordResetOtp']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 // Route::post('/gesture-detection', [GestureController::class, 'store']);
 // // Endpoint untuk deteksi real-time (sudah ada)
 // Route::post('/detect-sign', [GestureController::class, 'detect']);
@@ -66,4 +73,21 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Logout
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    // Route untuk mendapatkan daftar semua Juru Bahasa Isyarat
+    Route::get('/interpreters', [InterpreterController::class, 'index']);
+
+    // Route untuk mendapatkan detail satu Juru Bahasa Isyarat
+    Route::get('/interpreters/{id}', [InterpreterController::class, 'show']);
+
+    // Route untuk membuat pemesanan baru
+    Route::post('/bookings', [BookingController::class, 'store'])->middleware('auth:sanctum');
+
+    // Route untuk mendapatkan daftar event
+    Route::get('/acara', [AcaraController::class, 'index']);
+    Route::get('/acara/{id}', [AcaraController::class, 'show']);
+
+    // Route untuk mendapatkan daftar komunitas
+    Route::get('/communities', [CommunityController::class, 'index']);
+    Route::get('/communities/{id}', [CommunityController::class, 'index']);
 });

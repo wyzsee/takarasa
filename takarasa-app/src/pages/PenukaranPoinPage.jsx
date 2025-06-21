@@ -5,12 +5,14 @@ import Voucher from "@/assets/img/voucher/10.png";
 import { CaretLeft, CoinVertical, CaretRight } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import api from "../api";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Profile from "./Profile";
+const defaultProfilePic = "/src/assets/img/ppdefault.jpg";
 
 export default function Dashboard() {
     const { id } = useParams();
-    const [userData, setUserData] = useState("");
+    const navigate = useNavigate();
+    const [user, setUser] = useState({});
     const [vouchers, setVouchers] = useState([]);
     const [loadingVouchers, setLoadingVouchers] = useState(false);
     const [totalPoints, setTotalPoints] = useState(0);
@@ -19,16 +21,26 @@ export default function Dashboard() {
     const [redeemPopup, setRedeemPopup] = useState(false);
     const [isRedeeming, setIsRedeeming] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [imagePreview, setImagePreview] = useState(defaultProfilePic);
+
 
     useEffect(() => {
-        async function getUser() {
+        async function fetchUser() {
             try {
                 const res = await api.get("/user");
-                setUserData(res.data);
+                setUser(res.data);
+                if (res.data.foto_profil) {
+                    setImagePreview(
+                        `http://localhost:8000/storage/${res.data.foto_profil}`
+                    );
+                }
             } catch (err) {
                 console.error("Gagal ambil user:", err);
+            } finally {
+                setLoading(false); // Set loading ke false setelah selesai (baik sukses maupun gagal)
             }
         }
+      
         async function getVouchers() {
             try {
                 setLoadingVouchers(true);
@@ -42,7 +54,7 @@ export default function Dashboard() {
                 setLoadingVouchers(false);
             }
         }
-        getUser();
+        fetchUser();
         getVouchers();
     }, []);
 
@@ -194,14 +206,16 @@ export default function Dashboard() {
                         <div className="flex gap-3">
                             <div className="h-[64px] w-[64px] rounded-full">
                                 <img
-                                    src={ProfilePicture}
+                                    src={
+                                        imagePreview
+                                    }
                                     alt="Profile Picture"
                                     className=" w-16 h-16 object-cover rounded-full"
                                 />
                             </div>
                             <div className="flex flex-col gap-2">
                                 <h1 className="text-base font-semibold text-grey-10">
-                                    {userData.name}!
+                                    {user.name ? user.name : "..."}!
                                 </h1>
                                 <div className="flex justify-center items-center gap-1 w-28 h-8 bg-brand-accent rounded-full text-white">
                                     <CoinVertical size={16} weight="fill" />
@@ -269,7 +283,7 @@ export default function Dashboard() {
                                             <Link 
                                             onClick={() => handleOpenPopup(voucher)}>
                                                 {loading ? "Memproses..." : "Tukar"}
-                                            </Link>
+
                                         </Button>
                                     </div>
                                 </div>

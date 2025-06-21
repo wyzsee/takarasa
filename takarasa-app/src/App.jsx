@@ -7,6 +7,11 @@ import {
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import VerifyOtpPage from "./pages/VerifyOtpPage";
+import ForgotPassword from "./pages/ForgotPassword";
+import VerifyOtpPassword from "./pages/VerifyOtpPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
+
+
 import Dashboard from "./pages/Dashboard";
 import { KameraPage } from "./pages/KameraPage";
 import { HasilIsyaratPage } from "./pages/HasilIsyaratPage";
@@ -32,10 +37,11 @@ import Informasi from "./pages/Informasi";
 import LayananJBI from "./pages/LayananJBIPage";
 import EventKegiatan from "./pages/EventKegiatanPage";
 import Komunitas from "./pages/KomunitasPage";
-import DetailJBI from "./pages/DetailJBI";
-import DetailEvent from"./pages/DetailEvent";
+import DetailJBIPage from './pages/DetailJBI';
+import DetailEvent from "./pages/DetailEvent";
 import DetailWorkshop from "./pages/DetailWorkshop";
 import PesanJBI from "./pages/PemesananJBI";
+import PembayaranJBI from "./pages/PembayaranJBI";
 
 import Profile from "./pages/Profile";
 import AturProfilePage from "./pages/AturProfilePage";
@@ -54,6 +60,11 @@ export default function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/verify-otp" element={<VerifyOtpPage />} />
+
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/verify-otp-password" element={<VerifyOtpPassword />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
+
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="belajar" element={<Belajar />} />
                 <Route
@@ -96,7 +107,7 @@ export default function App() {
                     path="/terjemahan-isyarat/hasil"
                     element={<HasilIsyaratPage />}
                 />{" "}
-                
+
                 <Route path="/text-to-sign" element={<Text2Sign />} />
                 <Route path="/text-to-sign/result" element={<Text2SignResult />} />
 
@@ -112,13 +123,19 @@ export default function App() {
                 <Route path="/kuis/:slug" element={<KuisDetail />} />
                 <Route path="/kuis/:slug/:id" element={<KuisKonten />} />
 
-                <Route path="/layanan-jbi" element={<LayananJBI/>}/>
+                <Route path="/layanan-jbi" element={<LayananJBI />} />
                 <Route path="/event-kegiatan" element={<EventKegiatan />} />
                 <Route path="/komunitas" element={<Komunitas />} />
-                <Route path="/detail-jbi" element={<DetailJBI />} />
+                <Route path="/komunitas/:id" element={<Komunitas />} />
+                <Route path="/detail-jbi/:id" element={<DetailJBIPage />} />
                 <Route path="/detail-event" element={<DetailEvent />} />
+                <Route path="/detail-event/:id" element={<DetailEvent />} />
                 <Route path="/detail-workshop" element={<DetailWorkshop />} />
+                <Route path="/detail-workshop/:id" element={<DetailWorkshop />} />
                 <Route path="/pesan-jbi" element={<PesanJBI />} />
+                <Route path="/pesan-jbi/:id" element={<PesanJBI />} />
+                <Route path="/pembayaran-jbi" element={<PembayaranJBI />} />
+                <Route path="/pembayaran-jbi/:id" element={<PembayaranJBI />} />
 
             </Routes>
         </Router>

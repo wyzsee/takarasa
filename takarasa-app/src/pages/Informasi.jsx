@@ -51,7 +51,7 @@ export default function InformationPage() {
         <div className="bg-[#eae8f7] max-w-md min-h-screen font-jakarta flex flex-col mx-auto relative">
             {/* Background SVG, z-index diatur agar di paling belakang */}
             <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
-                <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[150%] h-full opacity-50 blur-3xl bg-[#E0DDF8] rounded-full"></div>
+                <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[150%] h-full opacity-50 blur-3xl bg-brand-primary rounded-full"></div>
                 <div className="absolute top-3/4 left-1/2 -translate-x-1/2 w-[150%] h-full opacity-50 blur-3xl bg-[#F8EBC6] rounded-full"></div>
             </div>
 

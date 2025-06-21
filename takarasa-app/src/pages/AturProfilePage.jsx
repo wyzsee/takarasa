@@ -108,7 +108,7 @@ export default function AturProfile() {
         <>
             <div className="relative max-w-md min-h-screen font-jakarta flex flex-col items-center mx-auto overflow-hidden px-6">
                 <header className="relative flex items-center justify-center p-4 w-full">
-                    <Link to="/voucher-dimiliki" className="left-0 absolute">
+                    <Link to="/profile" className="left-0 absolute">
                         <CaretLeft size={24} />
                     </Link>
 

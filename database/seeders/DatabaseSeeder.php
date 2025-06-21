@@ -19,8 +19,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
             QuizSeeder::class,      // Ini harus dijalankan lebih dulu
             QuestionSeeder::class,  // Baru ini dijalankan setelahnya
+            InterpreterSeeder::class,
+            AcaraSeeder::class,
+            CommunitySeeder::class, // Seeder untuk tabel acara
             // ... seeder lainnya
         ]);
-
+        
     }
 }
