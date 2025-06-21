@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../api";
 import { Button } from "@/components/ui/button";
 import { CaretLeft, Calendar, MapPin } from "@phosphor-icons/react";
-import FotoBambang from "@/assets/img/Bambang.jpg";
+import FotoGathering from "@/assets/img/gathering.png";
 import { list } from "postcss";
 
 export default function InformationPage() {
@@ -20,7 +20,7 @@ export default function InformationPage() {
             tanggal: "26 Januari 2026", // Data tanggal terpisah
             lokasi: "Gedung Sate", // Data lokasi terpisah (typo diperbaiki)
             // --------------------------
-            image: FotoBambang,
+            image: FotoGathering,
             penyelenggara: "Diselenggarakan oleh Teman Tuli Banjarmasin",
         },
         // Anda bisa menambahkan data event lain di sini dengan struktur yang sama
