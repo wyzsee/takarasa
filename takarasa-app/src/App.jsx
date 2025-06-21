@@ -40,6 +40,7 @@ import DetailJBIPage from './pages/DetailJBI';
 import DetailEvent from "./pages/DetailEvent";
 import DetailWorkshop from "./pages/DetailWorkshop";
 import PesanJBI from "./pages/PemesananJBI";
+import PembayaranJBI from "./pages/PembayaranJBI";
 
 import Profile from "./pages/Profile";
 import AturProfilePage from "./pages/AturProfilePage";
@@ -127,6 +128,8 @@ export default function App() {
                 <Route path="/detail-workshop" element={<DetailWorkshop />} />
                 <Route path="/pesan-jbi" element={<PesanJBI />} />
                 <Route path="/pesan-jbi/:id" element={<PesanJBI />} />
+                <Route path="/pembayaran-jbi" element={<PembayaranJBI />} />
+                <Route path="/pembayaran-jbi/:id" element={<PembayaranJBI />} />
 
             </Routes>
         </Router>
