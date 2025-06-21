@@ -3,41 +3,33 @@ import { useNavigate } from "react-router-dom";
 import api from "../api";
 import { Button } from "@/components/ui/button";
 import { CaretLeft } from "@phosphor-icons/react";
-import LogoInstagram from "@/assets/img/instagram_logo.png"; 
+import LogoInstagram from "@/assets/img/instagram_logo.png";
 
 
-export default function LayananJBIPage() {
+export default function KomunitasPage() {
     const navigate = useNavigate();
-    const [userName, setUserName] = useState("");
 
-    const komunitasData = [
-        {
-            id: 1,
-            username: 'teman_tuli',
-            description: 'Komunitas sosial untuk edukasi mahasiswa dan masyarakat mengenai budaya Tuli dan bahasa isyarat.',
-            link: 'https://www.instagram.com/teman_tuli',
-        },
-        {
-            id: 2,
-            username: 'fantasituli',
-            description: 'Fantasi Tuli berdaya yang bergerak di bidang seni dan kreativitas. Kolaborasi bidang seni antara teman Tuli & Dengar.',
-            link: 'https://www.instagram.com/fantasituli',
-        },
-    ];
-
+    const [communities, setCommunities] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        async function getUser() {
+        async function fetchCommunities() {
+            setIsLoading(true);
             try {
-                const res = await api.get("/user");
-                setUserName(res.data.name.split(' ')[0]);
+                const response = await api.get('/communities');
+                setCommunities(response.data);
             } catch (err) {
-                console.error("Gagal mengambil data user:", err);
-                setUserName("Pengguna");
+                console.error("Gagal mengambil data komunitas:", err);
+            } finally {
+                setIsLoading(false);
             }
         }
-        getUser();
+        fetchCommunities();
     }, []);
+
+    if (isLoading) {
+        return <div className="text-center mt-10">Memuat data komunitas...</div>;
+    }
 
     return (
         <div className="bg-[#fffff] max-w-md min-h-screen font-jakarta flex flex-col mx-auto relative">
@@ -63,33 +55,27 @@ export default function LayananJBIPage() {
 
             <main className="flex-grow w-full px-6 sm:px-6 pb-6 overflow-y-auto">
                 <div className="w-full space-y-4 mt-4">
-                    {komunitasData.map((komunitas) => (
+                    {communities.map((komunitas) => (
                         <a
                             key={komunitas.id}
-                            href={komunitas.link}
+                            href={komunitas.link_url} // Gunakan link_url dari database
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="
-                                flex items-center p-4 space-x-4
-                                bg-[#C9C2E8] rounded-2xl 
-                                transition-transform duration-300 hover:scale-105 hover:shadow-lg
-                            "
+                            className="flex items-center p-4 space-x-4 bg-[#C9C2E8] rounded-2xl transition-transform duration-300 hover:scale-105 hover:shadow-lg"
                         >
-                            {/* 3. Ikon diganti dengan tag <img> */}
                             <div className="bg-white p-2 rounded-xl shadow-md flex-shrink-0">
                                 <img
-                                    src={LogoInstagram}
-                                    alt="Logo Instagram"
+                                    // Gunakan logo_path dari database
+                                    src={`http://localhost:8000${komunitas.logo_path}`}
+                                    alt={`Logo ${komunitas.platform}`}
                                     className="w-12 h-12 object-contain"
                                 />
                             </div>
-
-                            {/* Kolom Kanan: Teks */}
                             <div className="flex flex-col text-white flex-grow">
-                                <h2 className="font-bold text-lg">{komunitas.username}</h2>
+                                <h2 className="font-bold text-lg">{komunitas.name}</h2> {/* Gunakan 'name' untuk judul */}
                                 <p className="text-sm mt-1">{komunitas.description}</p>
                                 <span className="text-sm font-semibold underline mt-auto pt-2">
-                                    Kunjungi
+                                    Kunjungi @{komunitas.username}
                                 </span>
                             </div>
                         </a>

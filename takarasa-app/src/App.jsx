@@ -112,9 +112,12 @@ export default function App() {
                 <Route path="/layanan-jbi" element={<LayananJBI />} />
                 <Route path="/event-kegiatan" element={<EventKegiatan />} />
                 <Route path="/komunitas" element={<Komunitas />} />
+                <Route path="/komunitas/:id" element={<Komunitas />} />
                 <Route path="/detail-jbi/:id" element={<DetailJBIPage />} />
                 <Route path="/detail-event" element={<DetailEvent />} />
+                <Route path="/detail-event/:id" element={<DetailEvent />} />
                 <Route path="/detail-workshop" element={<DetailWorkshop />} />
+                <Route path="/detail-workshop/:id" element={<DetailWorkshop />} />
                 <Route path="/pesan-jbi" element={<PesanJBI />} />
                 <Route path="/pesan-jbi/:id" element={<PesanJBI />} />
 

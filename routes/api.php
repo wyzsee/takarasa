@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\InterpreterController;
 use App\Http\Controllers\Api\BookingController;
+use App\Http\Controllers\Api\AcaraController;
+use App\Http\Controllers\Api\CommunityController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -58,4 +60,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Route untuk membuat pemesanan baru
     Route::post('/bookings', [BookingController::class, 'store'])->middleware('auth:sanctum');
+
+    // Route untuk mendapatkan daftar event
+    Route::get('/acara', [AcaraController::class, 'index']);
+    Route::get('/acara/{id}', [AcaraController::class, 'show']);
+
+    // Route untuk mendapatkan daftar komunitas
+    Route::get('/communities', [CommunityController::class, 'index']);
+    Route::get('/communities/{id}', [CommunityController::class, 'index']);
 });

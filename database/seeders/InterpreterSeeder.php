@@ -20,7 +20,7 @@ class InterpreterSeeder extends Seeder
             [
                 'name' => 'Bambang Susanto S.Sos., M.Cs',
                 'description' => 'Ahli bahasa isyarat, inklusi disabilitas, dan teknologi aksesibel.',
-                'image_path' => '/images/Bambang.jpg', // Pastikan gambar ada di public/images
+                'image_path' => '/storage/bambang.jpg', // Pastikan gambar ada di public/images
                 'link_detail' => '/detail-jbi/1', // Link bisa dinamis dengan ID
                 'experiences' => [
                     "Pengalaman lebih dari 10 tahun sebagai juru bahasa isyarat.",
@@ -35,7 +35,7 @@ class InterpreterSeeder extends Seeder
             [
                 'name' => 'Zuriri Roriri S.Sos., M.Cs',
                 'description' => 'Pakar bahasa isyarat, edukator inklusi, dan inovator teknologi disabilitas.',
-                'image_path' => '/images/zuriri.jpg', // Pastikan gambar ada di public/images
+                'image_path' => '/storage/zuriri.jpg', // Pastikan gambar ada di public/images
                 'link_detail' => '/detail-jbi/2',
                 'experiences' => [
                     "Berpengalaman dalam mengajar Bahasa Isyarat Indonesia (Bisindo).",
