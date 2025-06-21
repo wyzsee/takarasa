@@ -1,29 +1,33 @@
 import { Button } from "@/components/ui/button";
-import ProfilePicture from "@/assets/img/profile_picture.jpg";
 import { CaretLeft, CoinVertical, CaretRight } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import api from "../api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const defaultProfilePic = "/src/assets/img/ppdefault.jpg";
 
 export default function Dashboard() {
-    const [userName, setUserName] = useState("");
-    const [userFotoProfil, setFotoProfil] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const [user, setUser] = useState({});
+    const [loading, setLoading] = useState(true); // Mulai dengan true
     const [imagePreview, setImagePreview] = useState(defaultProfilePic);
-    const [imageFile, setImageFile] = useState(null);
 
     useEffect(() => {
-        async function getUser() {
+        async function fetchUser() {
             try {
                 const res = await api.get("/user");
-                setUserName(res.data.name);
-                setFotoProfil(res.data.foto_profile);
+                setUser(res.data);
+                if (res.data.foto_profil) {
+                    setImagePreview(
+                        `http://localhost:8000/storage/${res.data.foto_profil}`
+                    );
+                }
             } catch (err) {
                 console.error("Gagal ambil user:", err);
+            } finally {
+                setLoading(false); // Set loading ke false setelah selesai (baik sukses maupun gagal)
             }
         }
-        getUser();
+        fetchUser();
     }, []);
 
     return (
@@ -131,11 +135,7 @@ export default function Dashboard() {
                             <div className="h-[64px] w-[64px] rounded-full">
                                 <img
                                     src={
-                                        imageFile
-                                            ? URL.createObjectURL(imageFile)
-                                            : userFotoProfil
-                                            ? `http://localhost:8000/storage/${user.foto_profil}`
-                                            : imagePreview
+                                        imagePreview
                                     }
                                     alt="Profile Picture"
                                     className=" w-16 h-16 object-cover rounded-full"
@@ -143,7 +143,7 @@ export default function Dashboard() {
                             </div>
                             <div className="flex flex-col gap-2">
                                 <h1 className="text-base font-semibold text-grey-10">
-                                    {userName}!
+                                    {user.name ? user.name : "..."}!
                                 </h1>
                                 <div className="flex justify-center items-center gap-1 w-28 h-8 bg-brand-accent rounded-full text-white">
                                     <CoinVertical size={16} weight="fill" />

@@ -6,27 +6,34 @@ import { CaretRight, CoinVertical } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import api from "../api";
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 const defaultProfilePic = "/src/assets/img/ppdefault.jpg";
 
 export default function Dashboard() {
-    const [userName, setUserName] = useState("");
-    const [userFotoProfil, setFotoProfil] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const [user, setUser] = useState({});
+    const [loading, setLoading] = useState(true); // Mulai dengan true
+
     const [imagePreview, setImagePreview] = useState(defaultProfilePic);
-    const [imageFile, setImageFile] = useState(null);
+    
 
     useEffect(() => {
-        async function getUser() {
+        async function fetchUser() {
             try {
                 const res = await api.get("/user");
-                setUserName(res.data.name);
-                setFotoProfil(res.data.foto_profile);
+                setUser(res.data);
+                if (res.data.foto_profil) {
+                    setImagePreview(
+                        `http://localhost:8000/storage/${res.data.foto_profil}`
+                    );
+                }
             } catch (err) {
                 console.error("Gagal ambil user:", err);
+            } finally {
+                setLoading(false); // Set loading ke false setelah selesai (baik sukses maupun gagal)
             }
         }
-        getUser();
+        fetchUser();
     }, []);
 
     return (
@@ -149,7 +156,7 @@ export default function Dashboard() {
                 <div className="container flex flex-col items-center mx-auto gap-4 mb-24 h-full">
                     <div className="flex justify-between items-center w-full">
                         <h1 className="text-xl font-semibold text-grey-100">
-                            Halo, {userName}!
+                            Halo, {user.name ? user.name : "..."}!
                         </h1>
                         <div className="w-16 h-16">
                             <img src={logo} alt="Logo Takarasa" />
@@ -158,17 +165,14 @@ export default function Dashboard() {
                     <div className="flex flex-col justify-center items-center gap-2 mb-6">
                         <div className="h-[100px] w-[100px] rounded-full">
                             <img
-                                src={
-                                    imageFile ? URL.createObjectURL(imageFile)
-                                    : userFotoProfil ? `http://localhost:8000/storage/${user.foto_profil}`
-                                    : imagePreview 
+                                src={imagePreview 
                                 }
                                 alt="Profile Picture"
                                 className="w-24 h-24 object-cover rounded-full"
                             />
                         </div>
                         <h1 className="text-xs font-bold text-grey-100">
-                            {userName}
+                            {user.name ? user.name : "..."}
                         </h1>
                         <Link to="/penukaran-poin">
                             <div className="flex justify-center items-center gap-1 w-28 h-8 bg-brand-accent rounded-full text-white">

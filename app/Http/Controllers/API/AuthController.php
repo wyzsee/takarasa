@@ -238,7 +238,7 @@ class AuthController extends Controller
                 'max:255',
                 Rule::unique('users')->ignore($user->id),
             ],
-            'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg|max:5120' // maks 5MB
+            'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg|max:5120'  // maks 5MB
         ]);
 
         if ($validator->fails()) {
