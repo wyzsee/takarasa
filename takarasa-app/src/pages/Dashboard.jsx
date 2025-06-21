@@ -338,7 +338,6 @@ export default function Dashboard() {
                             <p className="text-center text-grey-100">Tidak ada informasi acara saat ini.</p>
                         )}
                     </div>
-
                 </div>
                 <Navbar />
             </div>
