@@ -36,7 +36,7 @@ class Booking extends Model
     /**
      * Mendefinisikan relasi: Sebuah Booking dimiliki oleh satu User.
      */
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
@@ -44,8 +44,13 @@ class Booking extends Model
     /**
      * Mendefinisikan relasi: Sebuah Booking untuk satu Interpreter.
      */
-    public function interpreter(): BelongsTo
+    public function interpreter()
     {
         return $this->belongsTo(Interpreter::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Booking::class);
     }
 }
