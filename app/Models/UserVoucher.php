@@ -20,7 +20,7 @@ class UserVoucher extends Model
     ];
 
     protected $casts = [
-        'redeemedd_at' => 'datetime',
+        'redeemed_at' => 'datetime',
         'used_at' => 'datetime',
         'expires_at' => 'datetime',
     ];

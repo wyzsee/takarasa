@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
+use App\Models\Interpreter;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
 // app/Models/Booking.php
@@ -19,6 +21,7 @@ class Booking extends Model
     protected $fillable = [
         'user_id',
         'interpreter_id',
+        'voucher_id',
         'customer_name',
         'customer_gender',
         'customer_email',
@@ -30,7 +33,10 @@ class Booking extends Model
         'event_datetime',
         'event_location',
         'status',
-        'total_price',
+        'harga_awal',
+        'potongan_voucher',
+        'biaya_admin',
+        'total_harga',
     ];
 
     /**
@@ -38,7 +44,7 @@ class Booking extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
@@ -46,7 +52,7 @@ class Booking extends Model
      */
     public function interpreter()
     {
-        return $this->belongsTo(Interpreter::class);
+        return $this->belongsTo(Interpreter::class, 'interpreter_id');
     }
 
     public function transactions()
