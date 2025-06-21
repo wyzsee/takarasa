@@ -14,9 +14,10 @@ use Carbon\Carbon;
 
 class QuizController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $userId = Auth::id();
+        $user = $request->user();
+        $userId = $user->id;
         \Log::info('Authenticated User ID: ' . ($userId ?? 'null'));
 
         if (!$userId) {

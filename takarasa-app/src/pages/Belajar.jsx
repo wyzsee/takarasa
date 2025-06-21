@@ -6,10 +6,12 @@ import { CaretRight, CoinVertical } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import api from "../api";
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { useParams, Outlet, Link, useLocation } from "react-router-dom";
 
 export default function Dashboard() {
-    const [userName, setUserName] = useState("");
+    const { id } = useParams();
+    const [userData, setUserData] = useState("");
+    const [point, setPoint] = useState(0);
     const [loading, setLoading] = useState(false);
     const isBelajarIndex = location.pathname === "/belajar";
 
@@ -17,13 +19,25 @@ export default function Dashboard() {
         async function getUser() {
             try {
                 const res = await api.get("/user");
-                setUserName(res.data.name);
+                setUserData(res.data);
             } catch (err) {
                 console.error("Gagal ambil user:", err);
             }
         }
         getUser();
     }, []);
+
+    useEffect(() => {
+        async function getPoint(){
+            try {
+                const res = await api.get(`/poin/${id}`);
+                setPoint(res.data.total_points);
+            } catch(err) {
+                console.error("Gagal ambil poin", err);
+            }
+        }
+        getPoint();
+    }, [id]);
 
     return (
         <>
@@ -145,7 +159,7 @@ export default function Dashboard() {
                 <div className="container flex flex-col items-center mx-auto gap-4 mb-24 h-full">
                     <div className="flex justify-between items-center w-full">
                         <h1 className="text-xl font-semibold text-grey-100">
-                            Halo, {userName}!
+                            Halo, {userData.name}!
                         </h1>
                         <div className="w-16 h-16">
                             <img src={logo} alt="Logo Takarasa" />
@@ -160,12 +174,12 @@ export default function Dashboard() {
                             />
                         </div>
                         <h1 className="text-xs font-bold text-grey-100">
-                            {userName}
+                            {userData.name}
                         </h1>
-                        <Link to="/penukaran-poin">
+                        <Link to={`/${userData.id}/penukaran-poin`}>
                             <div className="flex justify-center items-center gap-1 w-28 h-8 bg-brand-accent rounded-full text-white">
                                 <CoinVertical size={16} weight="fill" />
-                                <p className="text-xs font-bold">200 Poin</p>
+                                <p className="text-xs font-bold">{point} Poin</p>
                                 <CaretRight size={16} />
                             </div>
                         </Link>

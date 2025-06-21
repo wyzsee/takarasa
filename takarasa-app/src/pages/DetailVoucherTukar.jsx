@@ -2,60 +2,66 @@ import { Button } from "@/components/ui/button";
 import PopupRedeem from "@/components/ui/PopupRedeem";
 import ProfilePicture from "@/assets/img/profile_picture.jpg";
 import Voucher from "@/assets/img/voucher/10.png";
+import { format } from "date-fns";
+import { id as idLocale } from "date-fns/locale";
 import { CaretLeft, CoinVertical, CaretRight } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import api from "../api";
 import { useParams, Link } from "react-router-dom";
-import Profile from "./Profile";
 
 export default function Dashboard() {
     const { id } = useParams();
     const [userData, setUserData] = useState("");
-    const [vouchers, setVouchers] = useState([]);
-    const [loadingVouchers, setLoadingVouchers] = useState(false);
-    const [totalPoints, setTotalPoints] = useState(0);
-    const [voucherError, setVoucherError] = useState(null);
-    const [selectedVoucher, setSelectedVoucher] = useState(null);
-    const [redeemPopup, setRedeemPopup] = useState(false);
-    const [isRedeeming, setIsRedeeming] = useState(false);
+    const [voucher, setVoucher] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [totalPoints, setTotalPoints] = useState(0);
+    const [redeemPopup, setRedeemPopup] = useState(false);
+    const [loadingVoucher, setLoadingVoucher] = useState(true);
+    const [selectedVoucher, setSelectedVoucher] = useState(null);
+    const [isRedeeming, setIsRedeeming] = useState(false);
+    const [errorVoucher, setErrorVoucher] = useState(null);
 
     useEffect(() => {
         async function getUser() {
             try {
                 const res = await api.get("/user");
                 setUserData(res.data);
+                console.log("User data fetched:", res.data.name);
             } catch (err) {
-                console.error("Gagal ambil user:", err);
-            }
-        }
-        async function getVouchers() {
-            try {
-                setLoadingVouchers(true);
-                setVoucherError(null);
-                const res = await api.get("/vouchers");
-                setVouchers(res.data);
-            } catch (err) {
-                console.error("Gagal ambil voucher:", err);
-                setVoucherError("gagal memuat voucher.");
-            } finally {
-                setLoadingVouchers(false);
+                console.error("Failed to fetch user:", err);
             }
         }
         getUser();
-        getVouchers();
     }, []);
 
     useEffect(() => {
         async function getPoints() {
             try {
-                const res = await api.get(`/${id}/poin`);
+                const res = await api.get(`/${userData.id}/poin`);
                 setTotalPoints(res.data.total_points);
             } catch (err) {
                 console.log("Gagal mengambil poin.")
             }
         }
         getPoints();
+    },);
+
+    useEffect(() => {
+        console.log("Attempting to fetch voucher for ID:", id);
+        async function getVoucherDetails() {
+            try {
+                setLoadingVoucher(true);
+                setErrorVoucher(null);
+                const res = await api.get(`/voucher/${id}/tukar`);
+                setVoucher(res.data);
+            } catch (err) {
+                console.error("Failed to fetch voucher:", err);
+                setErrorVoucher("Maaf, voucher tidak dapat dimuat atau tidak ditemukan.");
+            } finally {
+                setLoadingVoucher(false);
+            }
+        }
+        getVoucherDetails();
     }, [id]);
 
     const handleClosePopup = () => {
@@ -68,8 +74,8 @@ export default function Dashboard() {
     }
 
     const handleRedeemVoucher = async () => {
-        console.log({totalPoints});
-        if (totalPoints < selectedVoucher.point_cost){
+        console.log({ totalPoints });
+        if (totalPoints < selectedVoucher.point_cost) {
             console.log('Poin tidak mencukupi.')
             return;
         } else {
@@ -77,18 +83,40 @@ export default function Dashboard() {
             try {
                 const res = await api.post(`/voucher/${selectedVoucher.id}/redeem`);
                 console.log('Voucher berhasil diredeem');
-            } catch (err){
+            } catch (err) {
                 console.log('Gagal redeem');
             }
         }
     }
 
-    if (loadingVouchers) {
-        <p className="font-jakarta text-center min-h-screen text-xl font-bold text-brand-primary flex items-center justify-center">Memuat voucher...</p>
+    if (loadingVoucher) {
+        return (
+            <div className="relative max-w-md min-h-screen font-jakarta flex flex-col items-center mx-auto overflow-hidden px-6 justify-center">
+                <p className="text-xl font-bold text-brand-primary">Memuat detail voucher...</p>
+            </div>
+        );
     }
 
-    if (voucherError)
-        <p className="font-jakarta text-center min-h-screen text-xl font-bold text-error flex items-center justify-center">{voucherError}</p>
+    if (errorVoucher) {
+        return (
+            <div className="relative max-w-md min-h-screen font-jakarta flex flex-col items-center mx-auto overflow-hidden px-6 justify-center text-center">
+                <p className="text-xl font-bold text-red-500 mb-4">{errorVoucher}</p>
+                <Link to="/voucher-dimiliki" className="text-brand-primary underline">Kembali ke Daftar Voucher</Link>
+            </div>
+        );
+    }
+
+    const formatDateForDisplay = (dateString) => {
+        if (!dateString) return "N/A";
+        try {
+            return format(new Date(dateString), 'dd MMMM yyyy', { locale: idLocale });
+        } catch (err) {
+            console.error("Error formatting date", err);
+        }
+    };
+
+    const formattedActiveFrom = formatDateForDisplay(voucher.active_from);
+    const formattedActiveUntil = formatDateForDisplay(voucher.active_until);
 
     return (
         <>
@@ -180,102 +208,59 @@ export default function Dashboard() {
                 </div>
 
                 <header className="relative flex items-center justify-center p-4 w-full">
-                    <Link to="/belajar" className="left-0 absolute">
+                    <Link to={`/${userData.id}/penukaran-poin`} className="left-0 absolute">
                         <CaretLeft size={24} />
                     </Link>
 
                     <h1 className="w-full text-center text-xl font-semibold">
-                        Penukaran Poin
+                        Detail Voucher
                     </h1>
                 </header>
-
-                <div className="container w-full flex flex-col items-center mx-auto gap-4 py-4 h-full">
-                    <div className="flex justify-between w-full bg-brand-primary rounded-2xl p-4">
-                        <div className="flex gap-3">
-                            <div className="h-[64px] w-[64px] rounded-full">
-                                <img
-                                    src={ProfilePicture}
-                                    alt="Profile Picture"
-                                    className=" w-16 h-16 object-cover rounded-full"
-                                />
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                <h1 className="text-base font-semibold text-grey-10">
-                                    {userData.name}!
-                                </h1>
-                                <div className="flex justify-center items-center gap-1 w-28 h-8 bg-brand-accent rounded-full text-white">
-                                    <CoinVertical size={16} weight="fill" />
-                                    <p className="text-xs font-bold">
-                                        {totalPoints} Poin
-                                    </p>
-                                    <CaretRight size={16} />
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <Link
-                                to={`/${userData.id}/riwayat-penukaran-poin`}
-                                className="text-xs text-right underline text-grey-10"
-                            >
-                                Riwayat
-                            </Link>
-                        </div>
-                    </div>
-
-                    <div className="flex w-full justify-between">
-                        <h1 className="font-semibold text-xl">Voucher</h1>
-                        <div>
-                            <Link
-                                to={`/${userData.id}/voucher-dimiliki`}
-                                className="text-xs text-right underline text-brand-primary"
-                            >
-                                Dimiliki
-                            </Link>
-                        </div>
-                    </div>
+                <div className="container w-full justify-between flex-grow flex flex-col items-center mx-auto gap-4 py-4 h-full">
                     <div className="flex flex-col w-full gap-4">
-                        {vouchers.map((voucher, index) => (
-                            <div key={voucher.id} className="flex w-full justify-evenly bg-grey-10 p-4 rounded-2xl border-2 border-dashed border-brand-primary gap-3">
-                                <div className="flex justify-center items-center bg-brand-primary50 w-24 h-24 rounded-xl flex-shrink-0">
-                                    <img src={Voucher} alt="" />
-                                </div>
-                                <div className="flex flex-col justify-between items-center flex-grow">
-                                    <div className="flex flex-col gap-0.5">
-                                        <h1 className="font-bold text-base w-56">
-                                            {voucher.name}
-                                        </h1>
-                                        <p className="text-xs text-grey-100 w-56 whitespace-nowrap overflow-hidden text-ellipsis">
-                                            {voucher.description}
-                                        </p>
-                                        <p className="font-bold text-xs text-grey-100">
-                                            {voucher.point_cost} poin
-                                        </p>
-                                    </div>
-                                    <div className="flex justify-between w-56">
-                                        <div>
-                                            <Link
-                                                to={`/voucher/${voucher.id}/tukar`}
-                                                className="text-xs text-right font-bold underline text-grey-100"
-                                            >
-                                                Selengkapnya
-                                            </Link>
-                                        </div>
-                                        <Button
-                                            asChild
-                                            type="submit"
-                                            className="w-[120px] h-8 bg-brand-primary text-lg text-white rounded-full py-3 font-semibold ease-in-out duration-300 hover:bg-grey-80"
-                                            disabled={loading}
-                                        >
-                                            <Link 
-                                            onClick={() => handleOpenPopup(voucher)}>
-                                                {loading ? "Memproses..." : "Tukar"}
-                                            </Link>
-                                        </Button>
-                                    </div>
+                        <div className="flex w-full justify-evenly bg-grey-10 p-4 rounded-2xl border-2 border-dashed border-brand-primary gap-3">
+                            <div className="flex justify-center items-center bg-brand-primary50 w-24 h-24 rounded-xl flex-shrink-0">
+                                <img src={Voucher} alt="" />
+                            </div>
+                            <div className="flex flex-col justify-center flex-grow">
+                                <div className="flex flex-col gap-0.5">
+                                    <h1 className="font-bold text-base w-56">
+                                        {voucher.name}
+                                    </h1>
+                                    <p className="text-xs text-grey-100 w-56 whitespace-nowrap overflow-hidden text-ellipsi">
+                                        {voucher.description}
+                                    </p>
+                                    <p className="font-bold text-xs text-grey-100 w-56">
+                                        {voucher.point_cost} poin
+                                    </p>
                                 </div>
                             </div>
-                        ))}
+                        </div>
+                        <div className="flex flex-col w-full gap-3">
+                            <h1 className="font-semibold text-xl text-grey-100 ">
+                                Deskripsi
+                            </h1>
+                            <p className="text-grey-100 text-base">
+                                {voucher.description}
+                            </p>
+                            <h1 className="font-semibold text-xl text-grey-100 ">
+                                Masa Berlaku
+                            </h1>
+                            <p className="text-grey-100 text-base">
+                                {formattedActiveFrom} - {formattedActiveUntil}
+                            </p>
+                        </div>
                     </div>
+                    <Button
+                        asChild
+                        type="submit"
+                        className="bottom-0 h-14 w-full p-[10px] bg-grey-100 text-lg text-white rounded-full py-3 font-semibold ease-in-out duration-300 hover:bg-grey-80"
+                        disabled={loading}
+                    >
+                        <Link
+                            onClick={() => handleOpenPopup(voucher)}>
+                            {loading ? "Memproses..." : "Tukar"}</Link>
+                    </Button>
                 </div>
             </div>
             {redeemPopup && (

@@ -196,6 +196,7 @@ export default function Dashboard() {
                     score={quizResult?.score}
                     correct={quizResult?.correct}
                     point={quizResult?.points_awarded}
+                    name={quiz.title}
                     totalQuestions={answers.length}
                     onRestartQuiz={() => navigate(`/kuis/${slug}`)}
                     onGoBack={() => navigate("/kuis")}
