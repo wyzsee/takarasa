@@ -89,20 +89,26 @@ export default function PembayaranJBI() {
                             Lainnya
                         </h1>
                         <Button
-                        variant="outline"
+                            asChild
+                            variant="outline"
                             type="submit"
                             className="w-full h-14 bg-grey-10 outline outline-2 outline-offset-[-2px]  outline-brand-primary text-lg text-brand-primary rounded-full py-3 font-semibold flex items-center justify-evenly mb-3 hover:bg-brand-primary50"
                             disabled={loading}
                         >
+                            <Link to="/">
                             {loading ? "Memproses..." : "Whatsapp Admin"}
+                            </Link>
                         </Button>
                         <Button
-                        variant="outline"
+                            asChild
+                            variant="outline"
                             type="submit"
                             className="w-full h-14 bg-grey-10 outline outline-2 outline-offset-[-2px]  outline-brand-primary text-lg text-brand-primary rounded-full py-3 font-semibold flex items-center justify-evenly mb-3 hover:bg-brand-primary50"
                             disabled={loading}
                         >
+                            <Link to="/dashboard">
                             {loading ? "Memproses..." : "Kembali ke Beranda"}
+                            </Link>
                         </Button>
                     </div>
                 </div>
