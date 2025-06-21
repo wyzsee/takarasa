@@ -16,7 +16,7 @@ class AcaraSeeder extends Seeder
         [
             'title' => 'Gathering Teman Tuli',
             'description' => 'Acara perkumpulan komunitas teman teman tuli banjarmasin',
-            'image_path' => '/images/gathering.png',
+            'image_path' => '/storage/gathering-2.jpg',
             'organizer' => 'Diselenggarakan oleh Teman Tuli Banjarmasin',
             'link_detail' => '/detail-event/1',
             'category' => 'gathering',
@@ -26,7 +26,7 @@ class AcaraSeeder extends Seeder
         [
             'title' => 'Gathering Teman Tuli Jabo',
             'description' => 'Acara perkumpulan komunitas teman teman tuli Jabodetabek.',
-            'image_path' => '/images/gathering.png',
+            'image_path' => '/storage/gathering.png',
             'organizer' => 'Diselenggarakan oleh Teman Tuli Jabodetabek.',
             'link_detail' => '/detail-event/2',
             'category' => 'gathering',
@@ -37,7 +37,7 @@ class AcaraSeeder extends Seeder
         [
             'title' => 'Workshop Belajar Bahasa Isyarat',
             'description' => 'Belajar bahasa isyarat bersama teman teman tuli maupun teman dengar.',
-            'image_path' => '/images/workshop.jpg',
+            'image_path' => '/storage/workshop.jpg',
             'organizer' => 'Diselenggarakan oleh Ikatan Peduli Tuli',
             'link_detail' => '/detail-workshop/3',
             'category' => 'workshop',
@@ -47,7 +47,7 @@ class AcaraSeeder extends Seeder
         [
             'title' => 'Seminar Nasional Teman Tuli',
             'description' => 'Acara perkumpulan komunitas teman teman tuli banjarmasin',
-            'image_path' => '/images/workshop.jpg',
+            'image_path' => '/storage/workshop-2.jpg',
             'organizer' => 'Diselenggarakan oleh Teman Tuli Banjar',
             'link_detail' => '/detail-workshop/4',
             'category' => 'workshop',

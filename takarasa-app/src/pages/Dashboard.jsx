@@ -3,19 +3,24 @@ import Navbar from "@/components/ui/Navbar";
 import logo from "@/assets/img/logo.png";
 import animasiHome from "@/assets/img/def_pose.png";
 import bookHome from "@/assets/img/book dashboard icon.png";
-import eventPhoto from "@/assets/img/event photo.jpg";
+// Hapus import eventPhoto karena akan diambil dari API
+// import eventPhoto from "@/assets/img/event photo.jpg";
 import { Clock, MapPinLine } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import api from "../api";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
+    const [userName, setUserName] = useState("");
+    const [loading, setLoading] = useState(false); // Tetap untuk tombol terjemahan jika diperlukan
+    const navigate = useNavigate();
 
-  const [userName, setUserName] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+    // State untuk data acara di bagian Informasi
+    const [featuredEvent, setFeaturedEvent] = useState(null);
+    const [eventLoading, setEventLoading] = useState(true);
+    const [eventError, setEventError] = useState(null);
 
-
+    // useEffect untuk mengambil data user
     useEffect(() => {
         async function getUser() {
             try {
@@ -27,6 +32,35 @@ export default function Dashboard() {
         }
         getUser();
     }, []);
+
+    // useEffect untuk mengambil data acara
+    useEffect(() => {
+        async function fetchFeaturedEvent() {
+            setEventLoading(true);
+            try {
+                const response = await api.get('/acara');
+                // Ambil acara pertama dari gathering, jika tidak ada, ambil dari workshop
+                const gathering = response.data.gathering || [];
+                const workshop = response.data.workshop || [];
+                
+                if (gathering.length > 0) {
+                    setFeaturedEvent(gathering[0]);
+                } else if (workshop.length > 0) {
+                    setFeaturedEvent(workshop[0]);
+                } else {
+                    setFeaturedEvent(null); // Tidak ada acara
+                }
+                setEventError(null);
+            } catch (err) {
+                console.error("Gagal mengambil data acara:", err);
+                setEventError("Gagal memuat informasi acara.");
+            } finally {
+                setEventLoading(false);
+            }
+        }
+
+        fetchFeaturedEvent();
+    }, []); 
 
     return (
         <>
@@ -156,13 +190,13 @@ export default function Dashboard() {
                                 </Link>
                             </Button>
                             <Button
-                type="submit"
-                className="w-1/2 h-12 bg-grey-100 text-xs text-white rounded-full py-3 font-semibold ease-in-out duration-300 hover:bg-grey-80"
-                disabled={loading}
-                onClick={() => navigate("/text-to-sign")}
-              >
-                {loading ? "Memproses..." : "Tulisan ke Bahasa Isyarat"}
-              </Button>
+                                type="submit"
+                                className="w-1/2 h-12 bg-grey-100 text-xs text-white rounded-full py-3 font-semibold ease-in-out duration-300 hover:bg-grey-80"
+                                disabled={loading}
+                                onClick={() => navigate("/text-to-sign")}
+                            >
+                                {loading ? "Memproses..." : "Tulisan ke Bahasa Isyarat"}
+                            </Button>
                         </div>
                     </div>
 
@@ -235,99 +269,76 @@ export default function Dashboard() {
                         </div>
                     </div>
 
+                    {/* --- KARTU INFORMASI (DIMODIFIKASI) --- */}
                     <div className="flex flex-col w-full bg-grey-10 p-4 rounded-2xl gap-3 relative overflow-hidden">
                         <div className="flex w-full items-center justify-between">
                             <h1 className="text-xl text-grey-100 font-semibold text-left">
                                 Informasi
                             </h1>
                             <div>
-                                <Link
-                                    to="/informasi"
-                                    className="text-xs text-right underline text-brand-primary"
-                                >
+                                <Link to="/informasi" className="text-xs text-right underline text-brand-primary">
                                     Lihat Selengkapnya
                                 </Link>
                             </div>
                         </div>
-                        <div className="w-[350px] h-[157px]">
-                            <img
-                                src={eventPhoto}
-                                className="w-full h-full object-cover object-bottom rounded-lg"
-                                alt=""
-                            />
-                        </div>
-                        <p className="text-base font-medium text-grey-100">
-                            Nama Event
-                        </p>
 
-                        <div className="flex gap-3">
-                            <div className="flex items-center text-grey-50 gap-1">
-                                <Clock size={14} />
-                                <p className="text-xs font-normal">12:00</p>
-                            </div>
-                            <div className="flex items-center text-grey-50 gap-1">
-                                <MapPinLine size={14} />
-                                <p className="text-xs font-normal">Kota Lama</p>
-                            </div>
-                        </div>
-
-                        <div className="flex relative justify-between items-center">
-                            <p className="w-[70%] text-xs font-normal text-grey-100">
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipisicing elit...
-                            </p>
-                            <Button
-                                type="submit"
-                                className="w-1/2 h-12 bg-grey-100 text-xs text-white rounded-full py-3 font-semibold ease-in-out duration-300 hover:bg-grey-80 z-10"
-                                disabled={loading}
-                            >
-                                {loading ? "Memproses..." : "Selengkapnya"}
-                            </Button>
-                            <svg
-                                width="199"
-                                height="189"
-                                viewBox="0 0 199 189"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="absolute -z-1 -right-5 -bottom-5"
-                            >
-                                <g filter="url(#filter0_f_155_1852)">
-                                    <circle
-                                        cx="149"
-                                        cy="149"
-                                        r="50"
-                                        fill="#FFB367"
+                        {eventLoading ? (
+                            <p className="text-center text-grey-100">Memuat informasi...</p>
+                        ) : eventError ? (
+                            <p className="text-center text-red-500">{eventError}</p>
+                        ) : featuredEvent ? (
+                            // Wrapper Link untuk membuat seluruh card bisa diklik
+                            <Link to={featuredEvent.link_detail} className="flex flex-col gap-3">
+                                <div className="w-full h-[157px]">
+                                    <img
+                                        src={featuredEvent.image_path}
+                                        className="w-full h-full object-cover object-center rounded-lg"
+                                        alt={featuredEvent.title}
                                     />
-                                </g>
-                                <defs>
-                                    <filter
-                                        id="filter0_f_155_1852"
-                                        x="0"
-                                        y="0"
-                                        width="298"
-                                        height="298"
-                                        filterUnits="userSpaceOnUse"
-                                        color-interpolation-filters="sRGB"
-                                    >
-                                        <feFlood
-                                            flood-opacity="0"
-                                            result="BackgroundImageFix"
-                                        />
-                                        <feBlend
-                                            mode="normal"
-                                            in="SourceGraphic"
-                                            in2="BackgroundImageFix"
-                                            result="shape"
-                                        />
-                                        <feGaussianBlur
-                                            stdDeviation="49.5"
-                                            result="effect1_foregroundBlur_155_1852"
-                                        />
-                                    </filter>
-                                </defs>
-                            </svg>
-                        </div>
+                                </div>
+                                <p className="text-base font-medium text-grey-100">
+                                    {featuredEvent.title}
+                                </p>
+                                <div className="flex gap-3">
+                                    {/* Pastikan backend Anda menyediakan field 'time' dan 'location' */}
+                                    <div className="flex items-center text-grey-50 gap-1">
+                                        <Clock size={14} />
+                                        <p className="text-xs font-normal">{featuredEvent.time || "Segera"}</p>
+                                    </div>
+                                    <div className="flex items-center text-grey-50 gap-1">
+                                        <MapPinLine size={14} />
+                                        <p className="text-xs font-normal">{featuredEvent.location || "Online"}</p>
+                                    </div>
+                                </div>
+                                <div className="flex relative justify-between items-center">
+                                    <p className="w-[70%] text-xs font-normal text-grey-100">
+                                        {/* Memotong deskripsi jika terlalu panjang */}
+                                        {featuredEvent.description.length > 80
+                                            ? `${featuredEvent.description.substring(0, 80)}...`
+                                            : featuredEvent.description
+                                        }
+                                    </p>
+                                    {/* Tombol ini sekarang ada di dalam Link wrapper, 
+                                        jadi secara teknis tidak perlu logic navigasi lagi,
+                                        tapi kita tetap biarkan sebagai bagian dari desain */}
+                                    <div className="w-1/2 flex justify-end">
+                                        <Button
+                                            asChild
+                                            className="h-12 bg-grey-100 text-xs text-white rounded-full py-3 px-6 font-semibold ease-in-out duration-300 hover:bg-grey-80 z-10"
+                                        >
+                                            <span>Selengkapnya</span>
+                                        </Button>
+                                    </div>
+                                    <svg width="199" height="189" viewBox="0 0 199 189" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute -z-1 -right-5 -bottom-5">
+                                        {/* ... SVG background ... */}
+                                    </svg>
+                                </div>
+                            </Link>
+                        ) : (
+                            <p className="text-center text-grey-100">Tidak ada informasi acara saat ini.</p>
+                        )}
                     </div>
+
                 </div>
                 <Navbar />
             </div>

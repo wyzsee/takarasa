@@ -131,7 +131,7 @@ export default function PemesananJBIPage() { // Sesuaikan nama komponen
                         <img
                             className="w-16 h-16 object-cover rounded-lg"
                             alt={interpreterDetail.name}
-                            src={`http://localhost:8000${interpreterDetail.image_path}`} // URL dinamis
+                            src={interpreterDetail.image_path} // URL dinamis
                         />
                         <div className="flex flex-col gap-1">
                             <h2 className="text-lg font-bold text-white">
