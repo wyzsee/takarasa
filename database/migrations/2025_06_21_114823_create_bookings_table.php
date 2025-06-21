@@ -10,7 +10,7 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-        {
+    {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
 
@@ -34,8 +34,10 @@ return new class extends Migration
 
             // Status Pemesanan (Penting untuk manajemen)
             $table->string('status')->default('pending'); // cth: pending, confirmed, completed, cancelled
-            $table->unsignedInteger('total_price')->nullable(); // Harga total bisa diisi nanti
-
+            $table->decimal('harga_awal', 15, 2)->default(0);
+            $table->decimal('potongan_voucher', 15, 2)->default(0);
+            $table->decimal('biaya_admin', 15, 2)->default(0);
+            $table->decimal('total_harga', 15, 2)->default(0);
             $table->timestamps();
         });
     }

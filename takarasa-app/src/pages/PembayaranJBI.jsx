@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { SealPercent, CaretRight } from "@phosphor-icons/react";
+import { SealPercent, CaretRight, CheckCircle } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import api from "../api";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -34,59 +34,157 @@ const paymentMethods = [
     },
 ];
 
+    const VoucherModal = ({ vouchers, onSelect, onClose }) => (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+            <div className="bg-white p-6 rounded-lg max-w-sm w-full">
+                <h2 className="text-xl font-bold mb-4">Pilih Voucher</h2>
+                <div className="flex flex-col gap-3 max-h-80 overflow-y-auto">
+                    {vouchers.map((userVoucher) => (
+                        <div
+                            key={userVoucher.id}
+                            onClick={() => onSelect(userVoucher)}
+                            className="p-4 border rounded-lg cursor-pointer hover:bg-gray-100"
+                        >
+                            <p className="font-bold">
+                                {userVoucher.voucher.name}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                                {userVoucher.voucher.description}
+                            </p>
+                            <p className="text-sm font-semibold text-grey-100">
+                                Diskon {userVoucher.voucher.percentage}%
+                            </p>
+                        </div>
+                    ))}
+                </div>
+                <Button
+                    onClick={onClose}
+                    variant="ghost"
+                    className="mt-4 w-full"
+                >
+                    Tutup
+                </Button>
+            </div>
+        </div>
+    );
+
 export default function PembayaranJBI() {
     const navigate = useNavigate();
-    const [selectedMethod, setSelectedMethod] = useState("");
+    const { id: bookingId } = useParams(); // Cukup satu ID dari URL
+
+    // State yang kita butuhkan
+    const [booking, setBooking] = useState(null); // Mulai dengan null
+    const [loading, setLoading] = useState(true); // Mulai dengan true
+    const [error, setError] = useState(null);
+    const [selectedMethod, setSelectedMethod] = useState(null);
+
+    const [availableVouchers, setAvailableVouchers] = useState([]);
+    const [selectedVoucher, setSelectedVoucher] = useState(null);
+    const [isVoucherModalOpen, setIsVoucherModalOpen] = useState(false);
+
+    const [priceDetails, setPriceDetails] = useState({
+        harga_awal: 0,
+        potongan_voucher: 0,
+        biaya_admin: 0,
+        total_harga: 0,
+    });
 
     const handleSelectMethod = (methodCode) => {
         setSelectedMethod(methodCode);
     };
 
-    const { id: interpreterId } = useParams();
-
-    // PERBAIKAN 1: Tambahkan state untuk formData
-    const [formData, setFormData] = useState({
-        namaLengkap: "",
-        email: "",
-    });
-
-    // PERBAIKAN 2 (PENTING): Ubah state awal menjadi object kosong {} untuk menghindari error 'null'
-    const [interpreterDetail, setInterpreterDetail] = useState({});
-
-    const [error, setError] = useState(null);
-
-    // PERBAIKAN 3: State loading harus dimulai dengan 'true'
-    const [loading, setLoading] = useState(true);
-
+    // Hanya satu useEffect untuk mengambil semua data yang dibutuhkan
     useEffect(() => {
-        // Tidak perlu set loading di sini karena sudah di-set di initial state
         async function fetchData() {
             try {
-                // Ambil data JBI dan user secara bersamaan untuk efisiensi
-                const [interpreterRes, userRes] = await Promise.all([
-                    api.get(`/interpreters/${interpreterId}`),
-                    api.get("/user"),
-                ]);
+                // 1. Ambil detail booking
+                const bookingRes = await api.get(`/bookings/${bookingId}`);
+                const bookingData = bookingRes.data;
+                setBooking(bookingData);
 
-                setInterpreterDetail(interpreterRes.data);
+                // Inisialisasi harga dari data booking
+                setPriceDetails({
+                    harga_awal: bookingData.harga_awal,
+                    potongan_voucher: bookingData.potongan_voucher,
+                    biaya_admin: bookingData.biaya_admin,
+                    total_harga: bookingData.total_harga,
+                });
 
-                // Pre-fill form dengan data user yang login
-                setFormData((prevState) => ({
-                    ...prevState,
-                    namaLengkap: userRes.data.name || "",
-                    email: userRes.data.email || "",
-                }));
+                // 2. Ambil daftar voucher
+                const voucherRes = await api.get("/my-vouchers");
+                setAvailableVouchers(voucherRes.data);
             } catch (err) {
                 console.error("Gagal mengambil data:", err);
-                setError("Gagal memuat data. Pastikan Anda sudah login.");
+                setError("Gagal memuat detail. Silakan coba lagi.");
             } finally {
-                // Set loading menjadi false setelah semua proses selesai
                 setLoading(false);
             }
         }
 
-        fetchData();
-    }, [interpreterId]);
+        if (bookingId) {
+            fetchData();
+        }
+    }, [bookingId]);
+
+    const handleApplyVoucher = async (userVoucher) => {
+        setLoading(true);
+        setIsVoucherModalOpen(false);
+
+        try {
+            const res = await api.post(`/bookings/${bookingId}/apply-voucher`, {
+                // KIRIM PROPERTI 'unique_code' DARI OBJEK 'userVoucher'
+                voucher_code: userVoucher.unique_code,
+            });
+
+            // Update state harga dengan data dari backend
+            setPriceDetails(res.data.data);
+            // Di sini kita bisa menyimpan seluruh objek 'userVoucher' jika perlu
+            setSelectedVoucher(userVoucher.voucher);
+            alert(res.data.message);
+        } catch (err) {
+            console.error("Gagal menerapkan voucher:", err);
+            // Log pesan error dari server untuk debugging
+            const serverMessage =
+                err.response?.data?.message || "Terjadi kesalahan";
+            const validationErrors = err.response?.data?.errors;
+
+            // Tampilkan pesan validasi yang lebih spesifik jika ada
+            if (validationErrors && validationErrors.voucher_code) {
+                alert(validationErrors.voucher_code[0]);
+            } else {
+                alert(serverMessage);
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+   const handlePayment = async () => {
+    if (!selectedMethod) {
+        alert("Silakan pilih metode pembayaran terlebih dahulu.");
+        return;
+    }
+    
+    setLoading(true);
+
+    try {
+        // Panggil endpoint baru untuk "membuat" transaksi
+        await api.post(`/bookings/${booking.id}/create-transaction`, {
+            // Anda bisa kirim data tambahan jika perlu, misal metode pembayaran
+            payment_method: selectedMethod 
+        });
+
+        // Jika sukses, langsung arahkan ke halaman status
+        navigate(`/detail-pembayaran-jbi/${booking.id}`);
+
+    } catch (err) {
+        console.error("Gagal membuat transaksi:", err);
+        alert("Gagal memproses permintaan. Silakan coba lagi.");
+    } finally {
+        setLoading(false);
+    }
+};
+
 
     return (
         <>
@@ -107,25 +205,19 @@ export default function PembayaranJBI() {
                         {/* PERBAIKAN 4: Gunakan 'loading' sebagai penentu untuk placeholder */}
                         <img
                             className="w-16 h-16 object-cover rounded-lg bg-gray-400" // bg untuk placeholder
-                            alt={
-                                loading
-                                    ? "Memuat JBI..."
-                                    : interpreterDetail.name
-                            }
-                            src={
-                                loading || !interpreterDetail.image_path
-                                    ? defaultProfilePic
-                                    : `http://localhost:8000${interpreterDetail.image_path}`
-                            }
+                            alt="Foto"
+                            src=""
                         />
                         <div className="flex flex-col gap-1">
                             <h2 className="text-lg font-bold text-white">
-                                {loading ? "Memuat..." : interpreterDetail.name}
+                                {loading
+                                    ? "Memuat..."
+                                    : booking.interpreter.name}
                             </h2>
                             <p className="text-sm text-white">
                                 {loading
                                     ? "..."
-                                    : interpreterDetail.description}
+                                    : booking.interpreter.description}
                             </p>
                         </div>
                     </div>
@@ -134,12 +226,14 @@ export default function PembayaranJBI() {
                             Detail Pesanan
                         </h1>
                         <table>
+                            <tbody>
+
                             <tr>
                                 <td className="text-grey-50 text-sm pb-3 pr-6">
                                     Nama Pemesan
                                 </td>
                                 <td className="text-grey-100 text-sm pb-3">
-                                    Jamal Musiala
+                                    {loading ? "..." : booking.customer_name}
                                 </td>
                             </tr>
                             <tr>
@@ -147,7 +241,7 @@ export default function PembayaranJBI() {
                                     Jenis Kelamin
                                 </td>
                                 <td className="text-grey-100 text-sm pb-3">
-                                    Laki-laki
+                                    {loading ? "..." : booking.customer_gender}
                                 </td>
                             </tr>
                             <tr>
@@ -155,7 +249,7 @@ export default function PembayaranJBI() {
                                     Email Pemesan
                                 </td>
                                 <td className="text-grey-100 text-sm pb-3">
-                                    jamalmusiala@gmail.xom
+                                    {loading ? "..." : booking.customer_email}
                                 </td>
                             </tr>
                             <tr>
@@ -163,7 +257,9 @@ export default function PembayaranJBI() {
                                     No Telepon
                                 </td>
                                 <td className="text-grey-100 text-sm pb-3">
-                                    0895365391032
+                                    {loading
+                                        ? "..."
+                                        : `+62${booking.customer_phone}`}
                                 </td>
                             </tr>
                             <tr>
@@ -171,7 +267,7 @@ export default function PembayaranJBI() {
                                     Nama Acara
                                 </td>
                                 <td className="text-grey-100 text-sm pb-3">
-                                    Talkshow
+                                    {loading ? "..." : booking.event_name}
                                 </td>
                             </tr>
                             <tr>
@@ -179,7 +275,7 @@ export default function PembayaranJBI() {
                                     Bentuk Acara
                                 </td>
                                 <td className="text-grey-100 text-sm pb-3">
-                                    Semi Formal
+                                    {loading ? "..." : booking.event_type}
                                 </td>
                             </tr>
                             <tr>
@@ -187,7 +283,7 @@ export default function PembayaranJBI() {
                                     Jenis Acara
                                 </td>
                                 <td className="text-grey-100 text-sm pb-3">
-                                    Offline
+                                    {loading ? "..." : booking.event_formality}
                                 </td>
                             </tr>
                             <tr>
@@ -195,7 +291,9 @@ export default function PembayaranJBI() {
                                     Nama Instansi
                                 </td>
                                 <td className="text-grey-100 text-sm pb-3">
-                                    Radio Generasi Muda
+                                    {loading
+                                        ? "..."
+                                        : booking.organization_name}
                                 </td>
                             </tr>
                             <tr>
@@ -203,7 +301,7 @@ export default function PembayaranJBI() {
                                     Waktu
                                 </td>
                                 <td className="text-grey-100 text-sm pb-3">
-                                    2025-08-05 | 16.00 - 18.00 WIB
+                                    {loading ? "..." : booking.event_datetime}
                                 </td>
                             </tr>
                             <tr>
@@ -211,22 +309,18 @@ export default function PembayaranJBI() {
                                     Lokasi
                                 </td>
                                 <td className="text-grey-100 text-sm pb-3">
-                                    Aula
+                                    {loading ? "..." : booking.event_location}
                                 </td>
                             </tr>
-                            <tr>
-                                <td className="text-grey-50 text-sm pb-3 pr-6">
-                                    Catatan
-                                </td>
-                                <td className="text-grey-100 text-sm pb-3">
-                                    Disediakan Makan Siang
-                                </td>
-                            </tr>
+                            </tbody>
                         </table>
                         <h1 className="font-semibold text-xl text-grey-100 my-3">
                             Voucher
                         </h1>
-                        <div className="bg-brand-primary w-full p-4 rounded-xl">
+                        <div
+                            className="bg-brand-primary w-full p-4 rounded-xl cursor-pointer"
+                            onClick={() => setIsVoucherModalOpen(true)} // Buka modal saat diklik
+                        >
                             <div className="flex justify-between">
                                 <div className="flex gap-4 items-center">
                                     <SealPercent
@@ -234,7 +328,9 @@ export default function PembayaranJBI() {
                                         className="text-grey-10"
                                     />
                                     <p className="text-grey-10 text-sm">
-                                        3 voucher yang dapat digunakan
+                                        {selectedVoucher
+                                            ? `Voucher "${selectedVoucher.name}" diterapkan`
+                                            : "Pilih voucher yang tersedia"}
                                     </p>
                                 </div>
                                 <CaretRight
@@ -300,45 +396,75 @@ export default function PembayaranJBI() {
                         </div>
                         <div className="mt-3">
                             <h1 className="font-semibold text-xl text-grey-100 mb-3">
-                                Detail Pesanan
+                                Rincian Harga
                             </h1>
+                            {/* Subtotal */}
                             <div className="flex justify-between items-center">
                                 <p className="text-grey-50 text-sm pb-3 pr-6">
                                     Subtotal
                                 </p>
                                 <p className="text-grey-100 text-sm pb-3">
-                                    Jamal Musiala
+                                    Rp{" "}
+                                    {priceDetails.harga_awal.toLocaleString(
+                                        "id-ID"
+                                    )}
                                 </p>
                             </div>
+                            {/* Biaya Admin */}
                             <div className="flex justify-between items-center">
                                 <p className="text-grey-50 text-sm pb-3 pr-6">
                                     Biaya Admin
                                 </p>
                                 <p className="text-grey-100 text-sm pb-3">
-                                    Jamal Musiala
+                                    Rp{" "}
+                                    {priceDetails.biaya_admin.toLocaleString(
+                                        "id-ID"
+                                    )}
                                 </p>
                             </div>
-                            <div className="flex justify-between items-center">
-                                <p className="text-grey-50 text-sm pb-3 pr-6">
-                                    Potongan Harga
-                                </p>
-                                <p className="text-grey-100 text-sm pb-3">
-                                    Jamal Musiala
-                                </p>
-                            </div>
-                            <div className="border-b border-brand-primary w-full"></div>
+                            {/* Diskon Voucher (hanya tampil jika ada) */}
+                            {priceDetails.potongan_voucher > 0 && (
+                                <div className="flex justify-between">
+                                    <p className="text-grey-50">
+                                        Diskon Voucher
+                                    </p>
+                                    <p className="text-green-500 font-semibold">
+                                        - Rp{" "}
+                                        {priceDetails.potongan_voucher.toLocaleString(
+                                            "id-ID"
+                                        )}
+                                    </p>
+                                </div>
+                            )}
+                            <div className="border-b border-brand-primary w-full my-2"></div>
+                            {/* Total */}
                             <div className="flex justify-between items-center my-3">
-                                <p className="text-grey-100 text-sm pb-3 pr-6">
+                                <p className="text-grey-100 text-lg font-bold pb-3 pr-6">
                                     Total
                                 </p>
-                                <p className="text-brand-primary text-sm font-semibold pb-3">
-                                    Jamal Musiala
+                                <p className="text-brand-primary text-lg font-bold pb-3">
+                                    Rp{" "}
+                                    {priceDetails.total_harga.toLocaleString(
+                                        "id-ID"
+                                    )}
                                 </p>
                             </div>
-                            <Button type="submit" disabled={loading} className="w-full h-[54px] bg-gray-800 text-white hover:bg-gray-700 py-3 text-base font-semibold rounded-full">
-                                                {loading ? 'Memproses...' : 'Selanjutnya'}
-                                            </Button>
+                            <Button
+                                onClick={handlePayment}
+                                type="submit"
+                                disabled={loading}
+                                className="w-full h-[54px] bg-gray-800 text-white hover:bg-gray-700 py-3 text-base font-semibold rounded-full"
+                            >
+                                {loading ? "Memproses..." : "Bayar Sekarang"}
+                            </Button>
                         </div>
+                        {isVoucherModalOpen && (
+                            <VoucherModal
+                                vouchers={availableVouchers}
+                                onSelect={handleApplyVoucher}
+                                onClose={() => setIsVoucherModalOpen(false)}
+                            />
+                        )}
                     </div>
                 </div>
             </div>

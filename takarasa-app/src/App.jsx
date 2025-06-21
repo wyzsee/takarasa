@@ -44,6 +44,7 @@ import PesanJBI from "./pages/PemesananJBI";
 import PembayaranJBI from "./pages/PembayaranJBI";
 import KetentuanLayanan from "./pages/KetentuanLayanan";
 import KebijakanPrivasi from "./pages/KebijakanPrivasi";
+import DetailPembayaranPage from "./pages/DetailPembayaranPage";
 
 import Profile from "./pages/Profile";
 import AturProfilePage from "./pages/AturProfilePage";
@@ -137,6 +138,8 @@ export default function App() {
                 <Route path="/pembayaran-jbi/:id" element={<PembayaranJBI />} />
                 <Route path="/ketentuan-layanan" element={<KetentuanLayanan />} />
                 <Route path="/kebijakan-privasi" element={<KebijakanPrivasi />} />
+                <Route path="/detail-pembayaran-jbi" element={<DetailPembayaranPage />} />
+                <Route path="/detail-pembayaran-jbi/:id" element={<DetailPembayaranPage />} />
 
             </Routes>
         </Router>

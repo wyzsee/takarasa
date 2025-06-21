@@ -61,4 +61,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Score::class);
     }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

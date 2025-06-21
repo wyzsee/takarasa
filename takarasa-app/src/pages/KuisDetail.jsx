@@ -32,7 +32,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="relative max-w-md min-h-screen font-jakarta flex flex-col bg-grey-10 items-center overflow-hidden px-6">
+      <div className="relative max-w-md min-h-screen font-jakarta flex flex-col bg-grey-10 items-center mx-auto overflow-hidden px-6">
         <div className="container flex flex-col items-center mx-auto gap-4">
           <header className="flex relative items-center w-full h-16">
             <div className="left-0 absolute">
