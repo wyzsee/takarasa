@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { CaretLeft, MapPinLine } from "@phosphor-icons/react";
+import { CaretLeft } from "@phosphor-icons/react";
 
 export default function IsyaratKeTulisanPage() {
     const navigate = useNavigate();
@@ -28,17 +28,9 @@ export default function IsyaratKeTulisanPage() {
     };
 
     return (
-        <div className="flex flex-col mx-auto max-w-md justify-center items-center h-screen bg-white text-gray-800 font-jakarta">
-            <header className="relative flex items-center p-4">
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => navigate(-1)}
-                    className="absolute -left-10 top-1/2 -translate-y-1/2"
-                >
-                    <CaretLeft size={24} className="h-6 w-6" />
-                </Button>
-
+        <div className="flex flex-col mx-auto max-w-md justify-center items-center h-screen bg-white font-jakarta">
+            <header className="relative flex items-center p-4 w-full">
+                <CaretLeft size={24} onClick={() => navigate(-1)} className="h-6 w-6 left-10 absolute"/>
                 <h1 className="w-full text-center text-xl font-semibold">
                     Bahasa Isyarat ke Tulisan
                 </h1>
@@ -179,8 +171,10 @@ export default function IsyaratKeTulisanPage() {
                     Architecto et, temporibus nemo distinctio sunt laborum
                     veniam illo quod iusto delectus?
                 </p>
-                <div className="w-full max-w-xs flex flex-col gap-4 mt-4">
-                    <Button
+            </main>
+
+            <footer className="w-full max-w-sm p-4 flex flex-col sm:flex-row gap-4 mb-8 justify-center font-jakarta">
+                <Button
                         className="w-full py-6 text-base rounded-full"
                         onClick={handleUseCamera}
                     >
@@ -193,8 +187,7 @@ export default function IsyaratKeTulisanPage() {
                     >
                         Pilih Video di Galeri
                     </Button>
-                </div>
-            </main>
+            </footer>
 
             <input
                 type="file"

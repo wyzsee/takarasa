@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OtpMail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -218,5 +220,66 @@ class AuthController extends Controller
                 'message' => 'Login gagal, periksa kembali email dan kata sandi Anda!',
             ], 401); // Kode HTTP 401 untuk Unauthorized
         }
+    }
+
+    // Update Profile
+    public function updateProfile(Request $request)
+    {
+        // Dapatkan user yang sedang login
+        $user = Auth::user();
+
+        // Validasi input
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users')->ignore($user->id),
+            ],
+            'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg|max:5120' // maks 5MB
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        // Update data user
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        // Handle upload foto profil jika ada file baru yang dikirim
+        if ($request->hasFile('foto_profil')) {
+            // Hapus foto lama jika ada, untuk menghemat storage
+            if ($user->foto_profil) {
+                Storage::disk('public')->delete($user->foto_profil);
+            }
+
+            // Simpan foto baru dan dapatkan path-nya
+            $path = $request->file('foto_profil')->store('profile-pictures', 'public');
+            $user->foto_profil = $path;
+        }
+
+        $user->save();
+
+        // Kembalikan data user yang sudah diupdate
+        return response()->json([
+            'success' => true,
+            'message' => 'Profil berhasil diperbarui!',
+            'data' => $user
+        ], 200);
+    }
+
+    // Logout
+     public function logout(Request $request)
+    {
+        // Hapus token akses saat ini yang digunakan untuk autentikasi
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Logout berhasil!'
+        ], 200);
     }
 }

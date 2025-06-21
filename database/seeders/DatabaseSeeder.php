@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\SignVideo;
+use App\Models\Quiz;
+use App\Models\Question;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,11 +16,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            QuizSeeder::class,      // Ini harus dijalankan lebih dulu
+            QuestionSeeder::class,  // Baru ini dijalankan setelahnya
+            // ... seeder lainnya
         ]);
+
     }
 }
