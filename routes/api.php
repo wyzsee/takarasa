@@ -5,6 +5,8 @@ use App\Http\Controllers\API\GestureController;
 use App\Http\Controllers\API\SignVideoController;
 use App\Http\Controllers\API\QuizController;
 use App\Http\Controllers\API\QuestionController;
+use App\Http\Controllers\API\VoucherController;
+use App\Http\Controllers\API\PointController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\InterpreterController;
@@ -12,6 +14,7 @@ use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\AcaraController;
 use App\Http\Controllers\Api\CommunityController;
 
+// Authentication
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
@@ -38,17 +41,34 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 
+    // Deteksi Realtime
     Route::post('/gesture-detection', [GestureController::class, 'store']);
     Route::post('/detect-sign', [GestureController::class, 'detect']);
     Route::post('/upload-video-sign', [GestureController::class, 'uploadVideo']);
 
+    // Kata ke Isyarat
     Route::get('/search', [SignVideoController::class, 'search']);
 
+    // Kuis
     Route::get('/kuis', [QuizController::class, 'index']);
-    Route::get('/kuis/{slug}', [QuizController::class, 'show']);
+    Route::get('/kuis/{slug}', [QuizController::class, 'show']); 
     Route::get('/kuis/{slug}/questions', [QuizController::class, 'getQuestions']);
     Route::post('/kuis/{slug}/submit', [QuizController::class, 'submitAnswers']);
 
+    // Voucher & Poin
+    Route::get('/vouchers', [VoucherController::class, 'index']);
+    // Debug
+    Route::get('/{id}/voucher-dimiliki', [VoucherController::class, 'redeemedByUser']);
+    //
+    Route::get('/voucher/{id}/tukar', [VoucherController::class, 'show']);
+    Route::get('/voucher/{id}/detail', [VoucherController::class, 'show']);
+    Route::post('/voucher/{voucher}/redeem', [VoucherController::class, 'redeemVoucher']);
+    // Route::get('/user/vouchers', [VoucherController::class, 'redeemedByUser']);
+    Route::get('/{id}/poin', [PointController::class, 'show']);
+
+    Route::get('/belajar', [PointController::class, 'show']);
+
+    // Edit Profile
     Route::post('/user/update', [AuthController::class, 'updateProfile']);
 
     // Logout

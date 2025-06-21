@@ -23,8 +23,8 @@ export default function Dashboard() {
 
     if (quizzes.length === 0 && !loading) {
         return (
-            <p className="font-jakarta text-center min-h-screen text-xl font-bold text-gray-600 flex items-center justify-center">
-                Memuat kuis.
+            <p className="font-jakarta text-brand-primary text-center min-h-screen text-xl font-bold flex items-center justify-center">
+                Memuat kuis...
             </p>
         );
     }

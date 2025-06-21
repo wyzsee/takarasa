@@ -6,10 +6,15 @@ import { CaretRight, CoinVertical } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import api from "../api";
-import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
+import { useParams, Outlet, Link, useLocation, Outlet, useNavigate } from "react-router-dom";
 const defaultProfilePic = "/src/assets/img/ppdefault.jpg";
 
 export default function Dashboard() {
+    const { id } = useParams();
+    const [userData, setUserData] = useState("");
+    const [point, setPoint] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const isBelajarIndex = location.pathname === "/belajar";
     const navigate = useNavigate();
     const [user, setUser] = useState({});
     const [loading, setLoading] = useState(true); // Mulai dengan true
@@ -17,10 +22,12 @@ export default function Dashboard() {
     const [imagePreview, setImagePreview] = useState(defaultProfilePic);
     
 
+
     useEffect(() => {
         async function fetchUser() {
             try {
                 const res = await api.get("/user");
+
                 setUser(res.data);
                 if (res.data.foto_profil) {
                     setImagePreview(
@@ -35,6 +42,18 @@ export default function Dashboard() {
         }
         fetchUser();
     }, []);
+
+    useEffect(() => {
+        async function getPoint(){
+            try {
+                const res = await api.get(`/poin/${id}`);
+                setPoint(res.data.total_points);
+            } catch(err) {
+                console.error("Gagal ambil poin", err);
+            }
+        }
+        getPoint();
+    }, [id]);
 
     return (
         <>
@@ -174,10 +193,10 @@ export default function Dashboard() {
                         <h1 className="text-xs font-bold text-grey-100">
                             {user.name ? user.name : "..."}
                         </h1>
-                        <Link to="/penukaran-poin">
+                        <Link to={`/${userData.id}/penukaran-poin`}>
                             <div className="flex justify-center items-center gap-1 w-28 h-8 bg-brand-accent rounded-full text-white">
                                 <CoinVertical size={16} weight="fill" />
-                                <p className="text-xs font-bold">200 Poin</p>
+                                <p className="text-xs font-bold">{point} Poin</p>
                                 <CaretRight size={16} />
                             </div>
                         </Link>

@@ -30,6 +30,7 @@ import PenukaranPoinPage from "./pages/PenukaranPoinPage";
 import RiwayatPenukaranPoinPage from "./pages/RiwayatPenukaranPoinPage";
 import VoucherDimilikiPage from "./pages/VoucherDimilikiPage";
 import DetailVoucherPage from "./pages/DetailVoucherPage";
+import DetailVoucherTukar from "./pages/DetailVoucherTukar";
 import IsyaratKeTulisanPage from "./pages/IsyaratKeTulisanPage";
 
 import Informasi from "./pages/Informasi";
@@ -65,7 +66,7 @@ export default function App() {
                 <Route path="/reset-password" element={<ResetPasswordPage />} />
 
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/belajar" element={<Belajar />} />
+                <Route path="belajar" element={<Belajar />} />
                 <Route
                     path="/belajar-bahasa-isyarat"
                     element={<BelajarBahasaIsyaratPage />}
@@ -75,20 +76,24 @@ export default function App() {
                     element={<DetailBelajarBahasaIsyaratPage />}
                 />
                 <Route
-                    path="/penukaran-poin"
+                    path="/:id/penukaran-poin"
                     element={<PenukaranPoinPage />}
                 />
                 <Route
-                    path="/riwayat-penukaran-poin"
+                    path="/:id/riwayat-penukaran-poin"
                     element={<RiwayatPenukaranPoinPage />}
                 />
                 <Route
-                    path="/voucher-dimiliki"
+                    path="/:id/voucher-dimiliki"
                     element={<VoucherDimilikiPage />}
                 />
                 <Route
-                    path="/detail-voucher"
+                    path="/voucher/:id/detail"
                     element={<DetailVoucherPage />}
+                />
+                <Route
+                    path="/voucher/:id/tukar"
+                    element={<DetailVoucherTukar />}
                 />
                 <Route
                     path="/terjemahan-isyarat"
@@ -117,8 +122,6 @@ export default function App() {
                 <Route path="/kuis" element={<Kuis />} />
                 <Route path="/kuis/:slug" element={<KuisDetail />} />
                 <Route path="/kuis/:slug/:id" element={<KuisKonten />} />
-                <Route path="/kuis/alfabet" element={<KuisDetail />} />
-                <Route path="/kuis/alfabet/1" element={<KuisKonten />} />
 
                 <Route path="/layanan-jbi" element={<LayananJBI />} />
                 <Route path="/event-kegiatan" element={<EventKegiatan />} />

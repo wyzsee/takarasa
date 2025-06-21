@@ -4,8 +4,7 @@ import { CoinVertical } from "@phosphor-icons/react";
 import ScoreBadge from "@/assets/img/kuis/score_badge.png";
 import { Link } from "react-router-dom";
 
-export default function PopupKuis({ score, correct, point,  totalQuestions, onClose, onRestartQuiz, onGoBack }) {
-    // const percentage = (score / totalQuestions) * 100;
+export default function PopupKuis({ score, correct, point, name, totalQuestions, onClose, onRestartQuiz, onGoBack }) {
     const [loading, setLoading] = useState(false);
 
     return (
@@ -17,7 +16,7 @@ export default function PopupKuis({ score, correct, point,  totalQuestions, onCl
                         <p className="mx-auto text-4xl text-success font-bold">{score}</p>
                     </div>
                 </div>
-                <h2 className="text-2xl font-bold text-grey-100 mb-4">Kuis Alfabet</h2>
+                <h2 className="text-2xl font-bold text-grey-100 mb-4">{name}</h2>
                 <div className="flex flex-col gap-2 mb-6 mx-auto">
                     <p className="text-lg text-grey-100">
                         Benar <span className="font-bold">{correct}</span>/<span className="font-bold">{totalQuestions}</span>
