@@ -12,6 +12,9 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
 Route::post('/resend-otp', [AuthController::class, 'resendOtp']);
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/verify-password-otp', [AuthController::class, 'verifyPasswordResetOtp']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 // Route::post('/gesture-detection', [GestureController::class, 'store']);
 // // Endpoint untuk deteksi real-time (sudah ada)
 // Route::post('/detect-sign', [GestureController::class, 'detect']);

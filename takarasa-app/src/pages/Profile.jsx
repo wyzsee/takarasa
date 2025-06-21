@@ -12,11 +12,15 @@ import {
 import { useEffect, useState } from "react";
 import api from "../api";
 import { Link, useNavigate } from "react-router-dom";
+const defaultProfilePic = "/src/assets/img/ppdefault.jpg";
 
 export default function Profile() {
     const [userName, setUserName] = useState("");
     const [userEmail, setUserEmail] = useState("");
+    const [userFotoProfil, setuserFotoProfil] = useState("");
     const [loading, setLoading] = useState(false);
+    const [imagePreview, setImagePreview] = useState(defaultProfilePic);
+    const [imageFile, setImageFile] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -25,6 +29,7 @@ export default function Profile() {
                 const res = await api.get("/user");
                 setUserName(res.data.name);
                 setUserEmail(res.data.email);
+                setFotoProfil(res.data.foto_profile);
             } catch (err) {
                 console.error("Gagal ambil user:", err);
             }
@@ -135,28 +140,41 @@ export default function Profile() {
                     </svg>
                 </div>
 
-                <div className="container flex flex-col items-center mx-auto gap-8 mt-16 mb-24 h-full">
-                    <div className="w-full bg-gradient-to-t from-[#ADA8D5]  t0-[#5A586F] flex gap-3 items-center p-4 rounded-2xl">
-                        <div className="h-[100px] w-[100px] rounded-full">
+                <div className="container flex flex-col items-center justify-center mx-auto gap-8 mt-16 mb-24 h-full">
+                    <div className="relative w-full bg-brand-primary flex gap-4 items-center justify-between p-4 rounded-2xl">
+                        <div className="h-[100px] w-[100px] rounded-full flex-shrink-0">
                             <img
-                                src={ProfilePicture}
+                                src={
+                                    imageFile
+                                        ? URL.createObjectURL(imageFile)
+                                        : userFotoProfil
+                                        ? `http://localhost:8000/storage/${user.foto_profil}`
+                                        : imagePreview
+                                }
                                 alt="Profile Picture"
-                                className="w-24 h-24 object-cover rounded-full"
+                                className="w-full h-full object-cover rounded-full"
                             />
                         </div>
-                        <div className="flex flex-col gap-3">
-                            <h1 className="text-xl font-bold text-grey-10">
-                                {userName}
-                            </h1>
-                            <p className="text-xs text-grey-10">{userEmail}</p>
-                        </div>
-                        <div className="flex flex-col justify-center items-center gap-1 w-28 h-8 rounded-full text-white">
-                            <CoinVertical
-                                className="text-warning"
-                                size={16}
-                                weight="fill"
-                            />
-                            <p className="text-xs font-bold">200 Poin</p>
+                        <div className="flex gap-2 flex-grow">
+                            {/* Nama & Email */}
+                            <div>
+                                <h1 className="text-xl font-bold text-white">
+                                    {userName}
+                                </h1>
+                                <p className="text-xs text-slate-200">
+                                    {userEmail}
+                                </p>
+                            </div>
+
+                            {/* Poin */}
+                            <div className="absolute right-8 flex flex-col justify-center items-center gap-1 rounded-full text-white">
+                                <CoinVertical
+                                    size={16}
+                                    weight="fill"
+                                    className="text-brand-accent"
+                                />
+                                <p className="text-xs font-bold">200 Poin</p>
+                            </div>
                         </div>
                     </div>
                     <div className="flex flex-col w-full gap-3">

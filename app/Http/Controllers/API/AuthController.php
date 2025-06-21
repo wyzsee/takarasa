@@ -282,4 +282,88 @@ class AuthController extends Controller
             'message' => 'Logout berhasil!'
         ], 200);
     }
+
+    // Forgot Password
+    public function forgotPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|exists:users,email',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => 'Email tidak terdaftar.'], 404);
+        }
+
+        $user = User::where('email', $request->email)->first();
+
+        // Kirim OTP ke email pengguna (menggunakan kembali fungsi sendOtp yang sudah ada)
+        $this->sendOtp($user);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Kode OTP untuk reset password telah dikirim ke email Anda.'
+        ], 200);
+    }
+
+    // Verifikasi OTP Forgot Password
+    public function verifyPasswordResetOtp(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|exists:users,email',
+            'otp' => 'required|digits:4',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => 'Input tidak valid.', 'errors' => $validator->errors()], 422);
+        }
+
+        $user = User::where('email', $request->email)
+                    ->where('otp', $request->otp)
+                    ->where('otp_expiry', '>', now())
+                    ->first();
+
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'OTP salah atau sudah kadaluarsa.'], 400);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'OTP valid. Silakan masukkan password baru Anda.'
+        ], 200);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|exists:users,email',
+            'otp' => 'required|digits:4',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => 'Input tidak valid.', 'errors' => $validator->errors()], 422);
+        }
+
+        // Verifikasi sekali lagi untuk keamanan
+        $user = User::where('email', $request->email)
+                    ->where('otp', $request->otp)
+                    ->first();
+
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'Proses reset gagal. Silakan coba lagi dari awal.'], 400);
+        }
+        
+        // Update password pengguna
+        $user->password = Hash::make($request->password);
+        
+        // Hapus OTP setelah berhasil digunakan
+        $user->otp = null;
+        $user->otp_expiry = null;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Password Anda telah berhasil direset. Silakan login.'
+        ], 200);
+    }
 }

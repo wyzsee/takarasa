@@ -7,17 +7,21 @@ import { useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import api from "../api";
 import { Outlet, Link, useLocation } from "react-router-dom";
+const defaultProfilePic = "/src/assets/img/ppdefault.jpg";
 
 export default function Dashboard() {
     const [userName, setUserName] = useState("");
+    const [userFotoProfil, setFotoProfil] = useState(null);
     const [loading, setLoading] = useState(false);
-    const isBelajarIndex = location.pathname === "/belajar";
+    const [imagePreview, setImagePreview] = useState(defaultProfilePic);
+    const [imageFile, setImageFile] = useState(null);
 
     useEffect(() => {
         async function getUser() {
             try {
                 const res = await api.get("/user");
                 setUserName(res.data.name);
+                setFotoProfil(res.data.foto_profile);
             } catch (err) {
                 console.error("Gagal ambil user:", err);
             }
@@ -154,7 +158,11 @@ export default function Dashboard() {
                     <div className="flex flex-col justify-center items-center gap-2 mb-6">
                         <div className="h-[100px] w-[100px] rounded-full">
                             <img
-                                src={ProfilePicture}
+                                src={
+                                    imageFile ? URL.createObjectURL(imageFile)
+                                    : userFotoProfil ? `http://localhost:8000/storage/${user.foto_profil}`
+                                    : imagePreview 
+                                }
                                 alt="Profile Picture"
                                 className="w-24 h-24 object-cover rounded-full"
                             />
@@ -722,9 +730,10 @@ export default function Dashboard() {
                                 Bermain Bersama Taka
                             </h1>
                             <div>
-
-                                <Link to="/kuis" className="text-xs text-right underline text-brand-primary">
-
+                                <Link
+                                    to="/kuis"
+                                    className="text-xs text-right underline text-brand-primary"
+                                >
                                     Lihat Selengkapnya
                                 </Link>
                             </div>

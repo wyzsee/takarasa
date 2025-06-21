@@ -7,6 +7,11 @@ import {
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import VerifyOtpPage from "./pages/VerifyOtpPage";
+import ForgotPassword from "./pages/ForgotPassword";
+import VerifyOtpPassword from "./pages/VerifyOtpPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
+
+
 import Dashboard from "./pages/Dashboard";
 import { KameraPage } from "./pages/KameraPage";
 import { HasilIsyaratPage } from "./pages/HasilIsyaratPage";
@@ -53,6 +58,11 @@ export default function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/verify-otp" element={<VerifyOtpPage />} />
+
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/verify-otp-password" element={<VerifyOtpPassword />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
+
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/belajar" element={<Belajar />} />
                 <Route

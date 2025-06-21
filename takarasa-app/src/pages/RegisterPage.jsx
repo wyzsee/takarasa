@@ -22,6 +22,9 @@ import {
 } from "@phosphor-icons/react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../api";
+// iziToast
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
@@ -74,7 +77,14 @@ export default function RegisterPage() {
 
     try {
       const res = await api.post("/register", data); // Kirim data ke API backend
-      alert("Registrasi berhasil! Silahkan check email untuk OTP.");
+      iziToast.success({
+                title: "Registrasi Berhasil",
+                message: "Silahkan check email untuk OTP.",
+                position: "topCenter",
+                color: "#7C3AED",
+                titleColor: "#ffffff",
+                messageColor: "#ffffff"
+            });
 
       navigate("/verify-otp", { state: { email: form.email } });
     } catch (err) {
@@ -88,7 +98,17 @@ export default function RegisterPage() {
       } else {
         message = err.response?.data?.message || err.message;
       }
-      alert("Gagal daftar:\n" + message);
+      iziToast.error({
+                title: "Gagal Daftar",
+                message:
+                    err.response?.data?.message ||
+                    err.message ||
+                    "Terjadi kesalahan",
+                position: "topCenter",
+                color: "#FF4D64",
+                titleColor: "#ffffff",
+                messageColor: "#ffffff" 
+            });
     }
   };
 
