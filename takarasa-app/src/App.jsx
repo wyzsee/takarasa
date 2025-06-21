@@ -36,8 +36,8 @@ import Informasi from "./pages/Informasi";
 import LayananJBI from "./pages/LayananJBIPage";
 import EventKegiatan from "./pages/EventKegiatanPage";
 import Komunitas from "./pages/KomunitasPage";
-import DetailJBI from "./pages/DetailJBI";
-import DetailEvent from"./pages/DetailEvent";
+import DetailJBIPage from './pages/DetailJBI';
+import DetailEvent from "./pages/DetailEvent";
 import DetailWorkshop from "./pages/DetailWorkshop";
 import PesanJBI from "./pages/PemesananJBI";
 
@@ -101,7 +101,7 @@ export default function App() {
                     path="/terjemahan-isyarat/hasil"
                     element={<HasilIsyaratPage />}
                 />{" "}
-                
+
                 <Route path="/text-to-sign" element={<Text2Sign />} />
                 <Route path="/text-to-sign/result" element={<Text2SignResult />} />
 
@@ -119,13 +119,14 @@ export default function App() {
                 <Route path="/kuis/alfabet" element={<KuisDetail />} />
                 <Route path="/kuis/alfabet/1" element={<KuisKonten />} />
 
-                <Route path="/layanan-jbi" element={<LayananJBI/>}/>
+                <Route path="/layanan-jbi" element={<LayananJBI />} />
                 <Route path="/event-kegiatan" element={<EventKegiatan />} />
                 <Route path="/komunitas" element={<Komunitas />} />
-                <Route path="/detail-jbi" element={<DetailJBI />} />
+                <Route path="/detail-jbi/:id" element={<DetailJBIPage />} />
                 <Route path="/detail-event" element={<DetailEvent />} />
                 <Route path="/detail-workshop" element={<DetailWorkshop />} />
                 <Route path="/pesan-jbi" element={<PesanJBI />} />
+                <Route path="/pesan-jbi/:id" element={<PesanJBI />} />
 
             </Routes>
         </Router>
