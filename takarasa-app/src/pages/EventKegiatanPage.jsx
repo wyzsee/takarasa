@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../api";
 import { Button } from "@/components/ui/button";
 import { CaretLeft, MapPinLine } from "@phosphor-icons/react";
-import FotoZuriri from "@/assets/img/zuriri.jpg";
-import FotoBambang from "@/assets/img/Bambang.jpg";
+import FotoGathering from "@/assets/img/gathering.png";
+import FotoWorkshop from "@/assets/img/workshop.jpg";
 
 export default function LayananJBIPage() {
     const navigate = useNavigate();
@@ -15,16 +15,16 @@ export default function LayananJBIPage() {
             id: 1,
             title: "Gathering Teman Tuli",
             description: "Acara perkumpulan komunitas teman teman tuli banjarmasin",
-            image: FotoBambang,
+            image: FotoGathering,
             penyelenggara: "Diselenggarakan oleh Teman Tuli Banjarmasin",
             link: "/detail-event",
         },
         {
             id: 2,
-            title: "Bambang Susanto S.Sos., M.Cs",
-            description: "Ahli bahasa isyarat, inklusi disabilitas, dan teknologi aksesibel.",
-            image: FotoBambang,
-            penyelenggara: "Bambang Susanto S.Sos., M.Cs",
+            title: "Gathering Teman Tuli Jabo",
+            description: "Acara perkumpulan komunitas teman teman tuli Jabodetabek.",
+            image: FotoGathering,
+            penyelenggara: "Diselenggarakan oleh Teman Tuli Jabodetabek.",
             link: "/GatheringEvent-1",
         },
     ];
@@ -32,18 +32,18 @@ export default function LayananJBIPage() {
     const workshopData = [
         {
             id: 1,
-            title: "Zuriri Roriri S.Sos., M.Cs",
-            description: "Pakar bahasa isyarat, edukator inklusi, dan inovator teknologi disabilitas.",
-            image: FotoZuriri,
-            penyelenggara: "Zuriri Roriri S.Sos., M.Cs",
+            title: "Workshop Belajar Bahasa Isyarat",
+            description: "Belajar bahasa isyarat bersama teman teman tuli maupun teman dengar.",
+            image: FotoWorkshop,
+            penyelenggara: "Diselenggarakan oleh Ikatan Peduli Tuli",
             link: "/detail-workshop",
         },
         {
             id: 2,
-            title: "Zuriri Roriri S.Sos., M.Cs",
-            description: "Pakar bahasa isyarat, edukator inklusi, dan inovator teknologi disabilitas.",
-            image: FotoZuriri,
-            penyelenggara: "Zuriri Roriri S.Sos., M.Cs",
+            title: "Seminar Nasional Teman Tuli",
+            description: "Acara perkumpulan komunitas teman teman tuli banjarmasin",
+            image: FotoWorkshop,
+            penyelenggara: "Diselenggarakan oleh Teman Tuli Banjar",
             link: "/Eventworkshop-1",
         },
     ];

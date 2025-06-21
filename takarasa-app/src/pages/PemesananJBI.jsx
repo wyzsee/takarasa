@@ -58,8 +58,7 @@ export default function InformationPage() {
         setLoading(true);
         console.log("Data yang akan dikirim:", formData);
         setTimeout(() => {
-            setLoading(false);
-            alert("Pemesanan berhasil! (Simulasi)");
+            navigate('/pembayaran-jbi', { state: { detailPemesanan: formData } });
         }, 1500);
     };
 
