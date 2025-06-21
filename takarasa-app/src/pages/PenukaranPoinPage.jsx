@@ -228,7 +228,7 @@ export default function Dashboard() {
                         </div>
                         <div>
                             <Link
-                                to={`/${userData.id}/riwayat-penukaran-poin`}
+                                to={`/${user.id}/riwayat-penukaran-poin`}
                                 className="text-xs text-right underline text-grey-10"
                             >
                                 Riwayat
@@ -240,7 +240,7 @@ export default function Dashboard() {
                         <h1 className="font-semibold text-xl">Voucher</h1>
                         <div>
                             <Link
-                                to={`/${userData.id}/voucher-dimiliki`}
+                                to={`/${user.id}/voucher-dimiliki`}
                                 className="text-xs text-right underline text-brand-primary"
                             >
                                 Dimiliki
@@ -283,7 +283,8 @@ export default function Dashboard() {
                                             <Link 
                                             onClick={() => handleOpenPopup(voucher)}>
                                                 {loading ? "Memproses..." : "Tukar"}
-
+                                            
+                                            </Link>
                                         </Button>
                                     </div>
                                 </div>

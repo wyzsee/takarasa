@@ -75,10 +75,7 @@ export default function App() {
                     path="/detail-belajar-bahasa-isyarat"
                     element={<DetailBelajarBahasaIsyaratPage />}
                 />
-                <Route
-                    path="/:id/penukaran-poin"
-                    element={<PenukaranPoinPage />}
-                />
+                <Route path="/:id/penukaran-poin" element={<PenukaranPoinPage />} />
                 <Route
                     path="/:id/riwayat-penukaran-poin"
                     element={<RiwayatPenukaranPoinPage />}

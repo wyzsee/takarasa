@@ -84,7 +84,7 @@ export default function PemesananJBIPage() { // Sesuaikan nama komponen
             console.log(response.data.message); // Pesan sukses dari Laravel
 
             // Jika berhasil, arahkan ke halaman pembayaran dengan membawa detail pesanan dari server
-            navigate('/pembayaran-jbi', { state: { detailPemesanan: response.data.data } });
+            navigate('/pembayaran-jbi/:id', { state: { detailPemesanan: response.data.data } });
 
         } catch (error) {
             console.error("Gagal membuat pemesanan:", error.response?.data);

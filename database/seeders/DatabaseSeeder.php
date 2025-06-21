@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\SignVideo;
 use App\Models\Quiz;
 use App\Models\Question;
+use App\Models\Voucher;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
             InterpreterSeeder::class,
             AcaraSeeder::class,
             CommunitySeeder::class, // Seeder untuk tabel acara
+            VoucherSeeder::class,
             // ... seeder lainnya
         ]);
         
