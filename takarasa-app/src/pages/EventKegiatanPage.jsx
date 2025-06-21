@@ -57,7 +57,7 @@ export default function EventKegiatanPage() {
             className="flex-shrink-0 flex flex-col w-[293px] h-auto bg-[#C9C2E8] rounded-xl shadow-lg overflow-hidden transition-shadow hover:shadow-xl p-3"
         >
             <img
-                src={`http://localhost:8000${item.image_path}`} // 5. Gunakan image_path dari database
+                src={item.image_path} // 5. Gunakan image_path dari database
                 alt={item.title}
                 className="w-full h-36 object-cover rounded-xl" // Sesuaikan tinggi gambar jika perlu
             />

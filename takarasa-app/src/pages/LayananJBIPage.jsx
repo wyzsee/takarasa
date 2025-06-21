@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../api"; // Pastikan api.js sudah dikonfigurasi dengan benar
 import { Button } from "@/components/ui/button";
 import { CaretLeft } from "@phosphor-icons/react";
-import FotoBambang from "@/assets/img/Bambang.jpg";
 
 // Hapus import gambar statis karena akan diambil dari database
 // import FotoZuriri from "@/assets/img/zuriri.jpg";
@@ -62,7 +61,7 @@ export default function InformationPage() {
                                 className="self-stretch w-full h-40 object-cover rounded-lg"
                                 // 6. URL gambar dari backend
                                 alt={jbiRes.name}
-                                src={FotoBambang} // <-- PENTING!
+                                src={jbiRes.image_path} // <-- PENTING!
                             />
                             <h2 className="text-xl font-bold text-grey-10">
                                 {jbiRes.name}
