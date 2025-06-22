@@ -13,6 +13,8 @@ use App\Http\Controllers\Api\InterpreterController;
 use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\AcaraController;
 use App\Http\Controllers\Api\CommunityController;
+use App\Http\Controllers\Api\LearnController;
+use App\Http\Controllers\Api\LearnMaterialController;
 
 // Authentication
 Route::post('/register', [AuthController::class, 'register']);
@@ -35,6 +37,9 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 // Route::get('/kuis/{slug}', [QuizController::class, 'show']);
 // Route::get('/kuis/{slug}/questions', [QuizController::class, 'getQuestions']);
 // Route::post('/kuis/{slug}/submit', [QuizController::class, 'submitAnswers']);
+
+// DEBUG
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -90,4 +95,13 @@ Route::middleware('auth:sanctum')->group(function () {
     // Route untuk mendapatkan daftar komunitas
     Route::get('/communities', [CommunityController::class, 'index']);
     Route::get('/communities/{id}', [CommunityController::class, 'index']);
+
+    Route::get('/belajar-bahasa-isyarat', [LearnController::class, 'index']);
+    Route::get('/belajar-bahasa-isyarat/{id}', [LearnController::class, 'show']);
+    Route::get('/detail-belajar-bahasa-isyarat/{id}', [LearnController::class, 'learnMaterials']);
+    Route::get('/materi-belajar-bahasa-isyarat/{id}', [LearnController::class, 'materialContent']);
+    Route::get('/konten-belajar-bahasa-isyarat/{id}', [LearnMaterialController::class, 'showContent']);
+    Route::get('/watched/{user_id}/{learn_id}/{learn_material_id}', [LearnMaterialController::class, 'isWatched']);
+    Route::post('/watched', [LearnMaterialController::class, 'markWatched']);
+    Route::get('/progress/{user_id}/{learn_id}', [LearnMaterialController::class, 'percentage']);
 });
