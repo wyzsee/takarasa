@@ -12,11 +12,6 @@ class Learn extends Model
         'total_material',
     ];
 
-    public function learningProgress()
-    {
-        return $this->hasMany(LearningProgress::class);
-    }
-
     public function learnMaterials()
     {
         return $this->hasMany(LearnMaterial::class, 'learn_id');

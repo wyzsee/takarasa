@@ -11,8 +11,10 @@ import api from "../api";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
+
     const [userName, setUserName] = useState("");
-    const [loading, setLoading] = useState(false); // Tetap untuk tombol terjemahan jika diperlukan
+    const [loading, setLoading] = useState(false);
+    const [learnModules, setLearnModules] = useState([]);
     const navigate = useNavigate();
 
     // State untuk data acara di bagian Informasi
@@ -22,10 +24,27 @@ export default function Dashboard() {
 
     // useEffect untuk mengambil data user
     useEffect(() => {
-        async function getUser() {
+        async function fetchData() {
             try {
                 const res = await api.get("/user");
                 setUserName(res.data.name);
+
+                const learnModulesRes = await api.get('/belajar-bahasa-isyarat');
+                const modulesWithProgress = await Promise.all(
+                    learnModulesRes.data.map(async (module) => {
+                        let progress = 0;
+                        if (res.data && res.data.id && module.id) {
+                            try {
+                                const progressRes = await api.get(`/progress/${res.data.id}/${module.id}`);
+                                progress = progressRes.data;
+                            } catch (progressErr) {
+                                console.warn(`Gagal ambil progress untuk modul ID ${module.id}:`, progressErr);
+                            }
+                        }
+                        return { ...module, progress };
+                    })
+                );
+                setLearnModules(modulesWithProgress);
             } catch (err) {
                 console.error("Gagal ambil user:", err);
             }
@@ -167,10 +186,8 @@ export default function Dashboard() {
                             Terjemahan
                         </h1>
                         <div className="flex justify-between">
-                            <p className="w-[70%] text-base font-medium text-grey-10">
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipisicing elit. Deserunt nostrum neque animi
-                                harum accusamus. Accusantium temporibus hic.
+                            <p className="w-[65%] text-base font-medium text-grey-10 text-justify">
+                                Terjemahkan dari bahasa isyarat ke teks maupun teks ke bahasa isyarat dengan mudah dan praktis.
                             </p>
                             <div className="">
                                 <img src={animasiHome} alt="" />
@@ -200,25 +217,23 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    <div className="flex flex-col w-full bg-grey-10 p-4 rounded-2xl gap-3">
+                    {/* <div className="flex flex-col w-full bg-grey-10 p-4 rounded-2xl gap-3 overflow-hidden">
                         <div className="flex w-full items-center justify-between">
                             <h1 className="text-xl text-grey-100 font-semibold text-left">
                                 Progress Belajar
                             </h1>
-                            <div>
-                                <a
-                                    href=""
+                            <div className="relative z-99">
+                                <Link
+                                    to="/belajar-bahasa-isyarat"
                                     className="text-xs text-right underline text-brand-primary"
                                 >
                                     Lihat Selengkapnya
-                                </a>
+                                </Link>
                             </div>
                         </div>
                         <div className="flex relative justify-between items-center">
                             <p className="w-[70%] text-base font-medium text-grey-100">
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipisicing elit. Alias pariatur reiciendis
-                                temporibus nulla illo.
+                                Mulai belajar bahasa isyarat bersama Taka dengan cara yang menyenangkan!
                             </p>
                             <svg
                                 width="179"
@@ -266,6 +281,58 @@ export default function Dashboard() {
                             <div className="pr-8 z-10">
                                 <img src={bookHome} alt="" />
                             </div>
+                        </div>
+                    </div> */}
+
+                    <div className="flex flex-col w-full bg-grey-10 p-4 rounded-2xl gap-3">
+                        <div className="flex w-full items-center justify-between">
+                            <h1 className="text-xl text-grey-100 font-semibold text-left">
+                                Progress Belajar
+                            </h1>
+                            <div>
+                                <Link
+                                    to="/belajar-bahasa-isyarat"
+                                    className="text-xs text-right underline text-brand-primary"
+                                >
+                                    Lihat Selengkapnya
+                                </Link>
+                            </div>
+                        </div>
+                        <div className="flex relative justify-between items-center gap-3">
+                            {learnModules.length > 0 ? (
+                                learnModules.map((module) => (
+                            <div className="rounded-md w-full">
+                                <div className="flex flex-col py-2 px-3 gap-[2px] bg-brand-primary rounded-t-md">
+                                    <div className="flex justify-between w-full">
+                                        <p className="text-xs font-normal text-grey-100">
+                                            Progress
+                                        </p>
+                                        <p className="text-xs font-normal text-grey-100">
+                                            {module.progress}%
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <Progress value={module.progress} />
+                                    </div>
+                                </div>
+                                <div className="flex justify-between py-2 px-3 gap-2 bg-grey-10 border border-brand-primary items-center rounded-b-md">
+                                    <img
+                                        src={module.icon}
+                                        className="w-8 h-8"
+                                        alt="" />
+                                    <div>
+                                        <p className="text-center font-medium text-base">
+                                            {module.name}
+                                        </p>
+                                    </div>
+                                    <div className="mr-4"></div>
+                                </div>
+                            </div>
+
+                            ))
+                            ) : (
+                                <p>Tidak ada modul belajar bahasa isyarat tersedia.</p>
+                            )}
                         </div>
                     </div>
 
