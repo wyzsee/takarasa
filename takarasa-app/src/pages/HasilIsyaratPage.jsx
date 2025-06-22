@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
+import api from "@/api"; 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { CaretLeft } from "@phosphor-icons/react";
@@ -46,8 +47,8 @@ export function HasilIsyaratPage() {
             formData.append("video", videoFile);
 
             try {
-                const response = await axios.post(
-                    "http://localhost:8000/api/upload-video-sign",
+                const response = await api.post(
+                    "/upload-video-sign",
                     formData,
                     {
                         headers: { "Content-Type": "multipart/form-data" },

@@ -7,87 +7,96 @@ import { CaretLeft } from "@phosphor-icons/react";
 
 export function KameraPage() {
     const navigate = useNavigate();
+
     const videoRef = useRef(null);
+
     const canvasRef = useRef(null);
+
     const intervalRef = useRef(null);
+
     const streamRef = useRef(null); // <-- Ref baru untuk menyimpan object stream
 
     const [prediction, setPrediction] = useState("");
-    const [cameraError, setCameraError] = useState(null);
 
-    const VIDEO_WIDTH = 382;
-    const VIDEO_HEIGHT = 579;
+    const [cameraError, setCameraError] = useState(null); // Fungsi untuk mengirim frame (tidak berubah)
 
-    // Fungsi untuk mengirim frame (tidak berubah)
     const sendFrameForDetection = () => {
         if (!videoRef.current || !canvasRef.current) return;
+
         const context = canvasRef.current.getContext("2d");
-        context.drawImage(videoRef.current, 0, 0, VIDEO_WIDTH, VIDEO_HEIGHT);
+
+        context.drawImage(videoRef.current, 0, 0, 640, 480);
+
         const frameData = canvasRef.current.toDataURL("image/jpeg");
 
         axios
-            .post("http://localhost:8000/api/detect-sign", { image: frameData })
+
+            .post("http://localhost:5000/predict", { image: frameData })
+
             .then((response) => {
                 const newWord = response.data.word;
+
                 if (newWord) {
                     setPrediction(newWord);
                 }
             })
+
             .catch((error) => {
                 console.error("API Error:", error.message);
+
                 if (intervalRef.current) clearInterval(intervalRef.current);
             });
-    };
+    }; // useEffect utama untuk mengelola kamera dan interval
 
-    // useEffect utama untuk mengelola kamera dan interval
     useEffect(() => {
         const enableCamera = async () => {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({
-                    video: {
-                        width: { ideal: VIDEO_WIDTH },
-                        height: { ideal: VIDEO_HEIGHT },
-                        facingMode: "user",
-                    },
-                });
-                // Simpan stream ke dalam ref agar bisa diakses saat cleanup
+                    video: true,
+                }); // Simpan stream ke dalam ref agar bisa diakses saat cleanup
+
                 streamRef.current = stream;
+
                 if (videoRef.current) {
                     videoRef.current.srcObject = stream;
+
                     videoRef.current.onloadedmetadata = () => {
                         // Mulai interval HANYA setelah kamera benar-benar siap
+
                         intervalRef.current = setInterval(
                             sendFrameForDetection,
+
                             1000
                         );
                     };
                 }
             } catch (err) {
                 console.error("Camera access error:", err);
+
                 setCameraError(
                     "Gagal mengakses kamera. Pastikan izin sudah diberikan."
                 );
             }
         };
 
-        enableCamera();
+        enableCamera(); // Fungsi Cleanup yang sekarang lebih robust
 
-        // Fungsi Cleanup yang sekarang lebih robust
         return () => {
-            console.log("Cleanup function is running...");
-            // Hentikan timer
+            console.log("Cleanup function is running..."); // Hentikan timer
+
             if (intervalRef.current) {
                 clearInterval(intervalRef.current);
+
                 console.log("Interval cleared.");
-            }
-            // Matikan stream kamera menggunakan ref yang stabil
+            } // Matikan stream kamera menggunakan ref yang stabil
+
             if (streamRef.current) {
                 streamRef.current.getTracks().forEach((track) => track.stop());
+
                 console.log("Camera stream stopped.");
             }
         };
-    }, []); // <-- Array dependensi kosong, memastikan ini berjalan sekali saat mount dan cleanup sekali saat unmount
-
+    }, []);
     // ... (kode UI Anda tidak berubah, sudah bagus)
     if (cameraError) {
         return (
@@ -120,12 +129,12 @@ export function KameraPage() {
                     autoPlay
                     playsInline
                     muted
-                    className="w-[382px] h-[579px] object-cover rounded-xl scale-x-[-1]"
+                    className="h-full w-96 rounded-xl"
                 ></video>
                 <canvas
                     ref={canvasRef}
-                    width="{VIDEO_WIDTH}"
-                    height="{VIDEO_HEIGHT}"
+                    width="600"
+                    height="480"
                     className="hidden"
                 ></canvas>
             </main>
