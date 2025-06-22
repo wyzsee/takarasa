@@ -7,16 +7,16 @@ import { CaretLeft, Calendar } from "@phosphor-icons/react";
 // Hapus import gambar statis
 // import FotoBambang from "@/assets/img/Bambang.jpg";
 
-export default function PemesananJBIPage() { // Sesuaikan nama komponen
+export default function PemesananJBIPage() {
+    // Sesuaikan nama komponen
     const navigate = useNavigate();
-    const { id: interpreterId } = useParams(); // 2. Ambil ID JBI dari URL
+    const { id: interpreterId } = useParams();
 
-    // State untuk data JBI yang akan ditampilkan
     const [interpreterDetail, setInterpreterDetail] = useState(null);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     // State untuk form dan loading submit
-    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         namaLengkap: "",
         jenisKelamin: "",
@@ -38,18 +38,19 @@ export default function PemesananJBIPage() { // Sesuaikan nama komponen
         async function fetchData() {
             try {
                 // Ambil data JBI yang akan dipesan
-                const interpreterRes = await api.get(`/interpreters/${interpreterId}`);
+                const interpreterRes = await api.get(
+                    `/interpreters/${interpreterId}`
+                );
                 setInterpreterDetail(interpreterRes.data);
 
                 // Ambil data user yang sedang login
                 const userRes = await api.get("/user");
                 // Pre-fill form dengan data user yang login
-                setFormData(prevState => ({
+                setFormData((prevState) => ({
                     ...prevState,
                     namaLengkap: userRes.data.name || "",
-                    email: userRes.data.email || ""
+                    email: userRes.data.email || "",
                 }));
-
             } catch (err) {
                 console.error("Gagal mengambil data:", err);
                 setError("Gagal memuat data. Pastikan Anda sudah login.");
@@ -61,46 +62,45 @@ export default function PemesananJBIPage() { // Sesuaikan nama komponen
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
+        setFormData((prevState) => ({ ...prevState, [name]: value }));
     };
 
-    // 5. handleSubmit yang mengirim data ke backend
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
         const dataToSubmit = {
             ...formData,
-            interpreter_id: interpreterId, // Sertakan ID JBI yang dipesan
+            interpreter_id: interpreterId,
         };
 
         try {
-            // Kirim data ke endpoint /bookings
-            const response = await api.post('/bookings', dataToSubmit);
+            const response = await api.post("/bookings", dataToSubmit);
+            const newBooking = response.data.data; // data booking dari server
 
-            console.log(response.data.message); // Pesan sukses dari Laravel
-
-            // Jika berhasil, arahkan ke halaman pembayaran dengan membawa detail pesanan dari server
-            navigate('/pembayaran-jbi/:id', { state: { detailPemesanan: response.data.data } });
-
+            // Arahkan ke halaman pembayaran dengan ID booking yang baru
+            navigate(`/pembayaran-jbi/${newBooking.id}`);
         } catch (error) {
-            console.error("Gagal membuat pemesanan:", error.response?.data);
-            // Tampilkan pesan error validasi dari Laravel jika ada
-            const errorMessages = error.response?.data?.errors
-                ? Object.values(error.response.data.errors).flat().join("\n")
-                : "Gagal membuat pemesanan. Periksa kembali data Anda.";
-            alert(errorMessages);
+            // Log seluruh objek error untuk melihat strukturnya
+            console.error("Terjadi kesalahan saat membuat pemesanan:", error);
+
+            // Tampilkan pesan yang lebih informatif kepada pengguna
+            const errorMessage =
+                error.response?.data?.message ||
+                "Gagal membuat pemesanan. Periksa koneksi Anda atau coba lagi nanti.";
+            console.error("Pesan dari server:", error.response?.data);
+            alert(errorMessage);
         } finally {
             setLoading(false);
         }
     };
-
     // Tampilkan loading jika data JBI belum siap
     if (!interpreterDetail) {
-        return <div className="flex justify-center items-center h-screen">Memuat...</div>;
+        return (
+            <div className="flex justify-center items-center h-screen">
+                Memuat...
+            </div>
+        );
     }
 
     // Tampilkan error jika gagal fetch
@@ -109,14 +109,23 @@ export default function PemesananJBIPage() { // Sesuaikan nama komponen
     }
 
     return (
-        <form onSubmit={handleSubmit} className="bg-white max-w-md min-h-screen font-jakarta flex flex-col mx-auto relative">
+        <form
+            onSubmit={handleSubmit}
+            className="bg-white max-w-md min-h-screen font-jakarta flex flex-col mx-auto relative"
+        >
             <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
                 <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[150%] h-full opacity-50 blur-3xl bg-[#E0DDF8] rounded-full"></div>
                 <div className="absolute top-3/4 left-1/2 -translate-x-1/2 w-[150%] h-full opacity-50 blur-3xl bg-[#F8EBC6] rounded-full"></div>
             </div>
 
             <header className="relative flex items-center mx-2 p-4">
-                <Button type="button" variant="ghost" size="icon" onClick={() => navigate(-1)} className="absolute">
+                <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => navigate(-1)}
+                    className="absolute"
+                >
                     <CaretLeft size={24} className="h-6 w-6" />
                 </Button>
                 <h1 className="text-xl w-full my-3 text-center font-semibold text-grey-90">
@@ -131,7 +140,7 @@ export default function PemesananJBIPage() { // Sesuaikan nama komponen
                         <img
                             className="w-16 h-16 object-cover rounded-lg"
                             alt={interpreterDetail.name}
-                            src={`http://localhost:8000${interpreterDetail.image_path}`} // URL dinamis
+                            src={interpreterDetail.image_path} // URL dinamis
                         />
                         <div className="flex flex-col gap-1">
                             <h2 className="text-lg font-bold text-white">
@@ -147,8 +156,12 @@ export default function PemesananJBIPage() { // Sesuaikan nama komponen
                     <section className="flex flex-col gap-4 mt-2">
                         {/* Nama Pemesan */}
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="namaLengkap" className="text-sm font-medium text-grey-80">
-                                Nama Pemesan <span className="text-error">*</span>
+                            <label
+                                htmlFor="namaLengkap"
+                                className="text-sm font-medium text-grey-80"
+                            >
+                                Nama Pemesan{" "}
+                                <span className="text-error">*</span>
                             </label>
                             <input
                                 type="text"
@@ -164,8 +177,12 @@ export default function PemesananJBIPage() { // Sesuaikan nama komponen
 
                         {/* Jenis Kelamin */}
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="jenisKelamin" className="text-sm font-medium text-grey-80">
-                                Jenis Kelamin <span className="text-error">*</span>
+                            <label
+                                htmlFor="jenisKelamin"
+                                className="text-sm font-medium text-grey-80"
+                            >
+                                Jenis Kelamin{" "}
+                                <span className="text-error">*</span>
                             </label>
                             <select
                                 id="jenisKelamin"
@@ -175,7 +192,9 @@ export default function PemesananJBIPage() { // Sesuaikan nama komponen
                                 className="w-full px-4 py-3 border border-grey-50 rounded-lg focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all"
                                 required
                             >
-                                <option value="" disabled>Pilih jenis kelamin</option>
+                                <option value="" disabled>
+                                    Pilih jenis kelamin
+                                </option>
                                 <option value="Laki-laki">Laki-laki</option>
                                 <option value="Perempuan">Perempuan</option>
                             </select>
@@ -183,8 +202,12 @@ export default function PemesananJBIPage() { // Sesuaikan nama komponen
 
                         {/* Email Pemesan */}
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="email" className="text-sm font-medium text-grey-80">
-                                Email Pemesan <span className="text-error">*</span>
+                            <label
+                                htmlFor="email"
+                                className="text-sm font-medium text-grey-80"
+                            >
+                                Email Pemesan{" "}
+                                <span className="text-error">*</span>
                             </label>
                             <input
                                 type="email"
@@ -200,11 +223,17 @@ export default function PemesananJBIPage() { // Sesuaikan nama komponen
 
                         {/* No. Telp Pemesan */}
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="noTelp" className="text-sm font-medium text-grey-80">
-                                No. Telp Pemesan <span className="text-error">*</span>
+                            <label
+                                htmlFor="noTelp"
+                                className="text-sm font-medium text-grey-80"
+                            >
+                                No. Telp Pemesan{" "}
+                                <span className="text-error">*</span>
                             </label>
                             <div className="flex items-center w-full border border-grey-50 rounded-lg focus-within:ring-2 focus-within:ring-purple-400 focus-within:border-transparent transition-all">
-                                <span className="px-4 text-grey-60 border-r border-grey-50">+62</span>
+                                <span className="px-4 text-grey-60 border-r border-grey-50">
+                                    +62
+                                </span>
                                 <input
                                     type="tel"
                                     id="noTelp"
@@ -220,7 +249,10 @@ export default function PemesananJBIPage() { // Sesuaikan nama komponen
 
                         {/* Nama Acara */}
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="namaAcara" className="text-sm font-medium text-grey-80">
+                            <label
+                                htmlFor="namaAcara"
+                                className="text-sm font-medium text-grey-80"
+                            >
                                 Nama Acara <span className="text-error">*</span>
                             </label>
                             <input
@@ -237,8 +269,12 @@ export default function PemesananJBIPage() { // Sesuaikan nama komponen
 
                         {/* Bentuk Acara */}
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="bentukAcara" className="text-sm font-medium text-grey-80">
-                                Bentuk Acara <span className="text-error">*</span>
+                            <label
+                                htmlFor="bentukAcara"
+                                className="text-sm font-medium text-grey-80"
+                            >
+                                Bentuk Acara{" "}
+                                <span className="text-error">*</span>
                             </label>
                             <select
                                 id="bentukAcara"
@@ -248,16 +284,22 @@ export default function PemesananJBIPage() { // Sesuaikan nama komponen
                                 className="w-full px-4 py-3 border border-grey-50 rounded-lg focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all"
                                 required
                             >
-                                <option value="" disabled>Pilih bentuk acara</option>
-                                <option value="Online">Online</option>
-                                <option value="Offline">Offline</option>
+                                <option value="" disabled>
+                                    Pilih bentuk acara
+                                </option>
+                                <option value="Daring">Online</option>
+                                <option value="Luring">Offline</option>
                             </select>
                         </div>
 
                         {/* Jenis Acara */}
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="jenisAcara" className="text-sm font-medium text-grey-80">
-                                Jenis Acara <span className="text-error">*</span>
+                            <label
+                                htmlFor="jenisAcara"
+                                className="text-sm font-medium text-grey-80"
+                            >
+                                Jenis Acara{" "}
+                                <span className="text-error">*</span>
                             </label>
                             <select
                                 id="jenisAcara"
@@ -267,7 +309,9 @@ export default function PemesananJBIPage() { // Sesuaikan nama komponen
                                 className="w-full px-4 py-3 border border-grey-50 rounded-lg focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all"
                                 required
                             >
-                                <option value="" disabled>Pilih jenis acara</option>
+                                <option value="" disabled>
+                                    Pilih jenis acara
+                                </option>
                                 <option value="Formal">Formal</option>
                                 <option value="Semi-Formal">Semi Formal</option>
                                 <option value="Non-Formal">Non Formal</option>
@@ -276,8 +320,12 @@ export default function PemesananJBIPage() { // Sesuaikan nama komponen
 
                         {/* Nama Instansi */}
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="namaInstansi" className="text-sm font-medium text-grey-80">
-                                Nama Instansi <span className="text-error">*</span>
+                            <label
+                                htmlFor="namaInstansi"
+                                className="text-sm font-medium text-grey-80"
+                            >
+                                Nama Instansi{" "}
+                                <span className="text-error">*</span>
                             </label>
                             <input
                                 type="text"
@@ -293,7 +341,10 @@ export default function PemesananJBIPage() { // Sesuaikan nama komponen
 
                         {/* Waktu */}
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="waktu" className="text-sm font-medium text-grey-80">
+                            <label
+                                htmlFor="waktu"
+                                className="text-sm font-medium text-grey-80"
+                            >
                                 Waktu <span className="text-error">*</span>
                             </label>
                             <div className="relative w-full">
@@ -306,13 +357,19 @@ export default function PemesananJBIPage() { // Sesuaikan nama komponen
                                     className="w-full pl-4 pr-10 py-3 border border-grey-50 rounded-lg focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all"
                                     required
                                 />
-                                <Calendar size={20} className="absolute right-3 top-1/2 -translate-y-1/2 text-grey-50 pointer-events-none" />
+                                <Calendar
+                                    size={20}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-grey-50 pointer-events-none"
+                                />
                             </div>
                         </div>
 
                         {/* Lokasi */}
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="lokasi" className="text-sm font-medium text-grey-80">
+                            <label
+                                htmlFor="lokasi"
+                                className="text-sm font-medium text-grey-80"
+                            >
                                 Lokasi <span className="text-error">*</span>
                             </label>
                             <textarea
@@ -331,8 +388,12 @@ export default function PemesananJBIPage() { // Sesuaikan nama komponen
             </main>
 
             <footer className="w-full max-w-md p-6 bg-white/0">
-                <Button type="submit" disabled={loading} className="w-full h-[54px] bg-gray-800 text-white hover:bg-gray-700 py-3 text-base font-semibold rounded-full">
-                    {loading ? 'Memproses...' : 'Selanjutnya'}
+                <Button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full h-[54px] bg-gray-800 text-white hover:bg-gray-700 py-3 text-base font-semibold rounded-full"
+                >
+                    {loading ? "Memproses..." : "Selanjutnya"}
                 </Button>
             </footer>
         </form>

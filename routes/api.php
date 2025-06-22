@@ -1,20 +1,21 @@
 <?php
 
-use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\API\GestureController;
-use App\Http\Controllers\API\SignVideoController;
-use App\Http\Controllers\API\QuizController;
-use App\Http\Controllers\API\QuestionController;
-use App\Http\Controllers\API\VoucherController;
-use App\Http\Controllers\API\PointController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\InterpreterController;
-use App\Http\Controllers\Api\BookingController;
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\QuizController;
 use App\Http\Controllers\Api\AcaraController;
+use App\Http\Controllers\API\PointController;
+use App\Http\Controllers\Api\BookingController;
+use App\Http\Controllers\API\GestureController;
+use App\Http\Controllers\API\PaymentController;
+use App\Http\Controllers\API\VoucherController;
+use App\Http\Controllers\API\QuestionController;
 use App\Http\Controllers\Api\CommunityController;
 use App\Http\Controllers\Api\LearnController;
 use App\Http\Controllers\Api\LearnMaterialController;
+use App\Http\Controllers\API\SignVideoController;
+use App\Http\Controllers\Api\InterpreterController;
 
 // Authentication
 Route::post('/register', [AuthController::class, 'register']);
@@ -68,6 +69,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/voucher/{id}/tukar', [VoucherController::class, 'show']);
     Route::get('/voucher/{id}/detail', [VoucherController::class, 'show']);
     Route::post('/voucher/{voucher}/redeem', [VoucherController::class, 'redeemVoucher']);
+    Route::get('/my-vouchers', [VoucherController::class, 'myVouchers']);
     // Route::get('/user/vouchers', [VoucherController::class, 'redeemedByUser']);
     Route::get('/{id}/poin', [PointController::class, 'show']);
 
@@ -87,6 +89,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Route untuk membuat pemesanan baru
     Route::post('/bookings', [BookingController::class, 'store'])->middleware('auth:sanctum');
+    Route::get('/bookings/{id}', [BookingController::class, 'show']);
+    Route::post('/bookings/{booking_id}/apply-voucher', [VoucherController::class, 'apply']);
+    Route::post('/bookings/{id}/create-transaction', [BookingController::class, 'createTransaction']);
+
+    Route::post('/payment/create', [PaymentController::class, 'createTransaction']);
+    Route::post('/payment/callback', [PaymentController::class, 'handleCallback']);
 
     // Route untuk mendapatkan daftar event
     Route::get('/acara', [AcaraController::class, 'index']);
