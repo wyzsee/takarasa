@@ -19,8 +19,11 @@ const defaultProfilePic = "/src/assets/img/ppdefault.jpg";
 export default function Profile() {
     const navigate = useNavigate();
     const [user, setUser] = useState({});
-    const [loading, setLoading] = useState(true);
+    const [point, setPoint] = useState(0);
+    const [loading, setLoading] = useState(true); // Mulai dengan true
+
     const [imagePreview, setImagePreview] = useState(defaultProfilePic);
+
 
     useEffect(() => {
         async function fetchUser() {
@@ -38,6 +41,10 @@ export default function Profile() {
                     setImagePreview(
                         `http://localhost:8000/storage/${res.data.foto_profil}`
                     );
+                }
+                if (res.data && res.data.id) {
+                    const pointRes = await api.get(`/${res.data.id}/poin`);
+                    setPoint(pointRes.data.total_points || 0);
                 }
             } catch (err) {
                 console.error("Gagal ambil user:", err);
@@ -91,9 +98,7 @@ export default function Profile() {
                                     weight="fill"
                                     className="text-brand-accent"
                                 />
-                                <p className="text-xs font-bold">
-                                    {loading ? "..." : `${user.total_points} Poin`}
-                                </p>
+                                <p className="text-xs font-bold">{point} Poin</p>
                             </div>
                             {/* ======================================= */}
                         </div>
