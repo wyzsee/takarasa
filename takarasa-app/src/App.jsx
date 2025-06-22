@@ -21,6 +21,7 @@ import Text2SignResult from './pages/Text2SignResult';
 import Belajar from "./pages/Belajar";
 import BelajarBahasaIsyaratPage from "./pages/BelajarBahasaIsyaratPage";
 import DetailBelajarBahasaIsyaratPage from "./pages/DetailBelajarBahasaIsyaratPage";
+import KontenBelajarBahasaIsyarat from "./pages/KontenBelajarBahasaIsyarat";
 
 import Kuis from "./pages/Kuis";
 import KuisDetail from "./pages/KuisDetail";
@@ -42,6 +43,8 @@ import DetailEvent from "./pages/DetailEvent";
 import DetailWorkshop from "./pages/DetailWorkshop";
 import PesanJBI from "./pages/PemesananJBI";
 import PembayaranJBI from "./pages/PembayaranJBI";
+import KetentuanLayanan from "./pages/KetentuanLayanan";
+import KebijakanPrivasi from "./pages/KebijakanPrivasi";
 import DetailPembayaranPage from "./pages/DetailPembayaranPage";
 
 import Profile from "./pages/Profile";
@@ -73,8 +76,12 @@ export default function App() {
                     element={<BelajarBahasaIsyaratPage />}
                 />
                 <Route
-                    path="/detail-belajar-bahasa-isyarat"
+                    path="/detail-belajar-bahasa-isyarat/:id"
                     element={<DetailBelajarBahasaIsyaratPage />}
+                />
+                <Route
+                    path="/konten-belajar-bahasa-isyarat/:id"
+                    element={<KontenBelajarBahasaIsyarat />}
                 />
                 <Route path="/:id/penukaran-poin" element={<PenukaranPoinPage />} />
                 <Route
@@ -134,6 +141,8 @@ export default function App() {
                 <Route path="/pesan-jbi/:id" element={<PesanJBI />} />
                 <Route path="/pembayaran-jbi" element={<PembayaranJBI />} />
                 <Route path="/pembayaran-jbi/:id" element={<PembayaranJBI />} />
+                <Route path="/ketentuan-layanan" element={<KetentuanLayanan />} />
+                <Route path="/kebijakan-privasi" element={<KebijakanPrivasi />} />
                 <Route path="/detail-pembayaran-jbi" element={<DetailPembayaranPage />} />
                 <Route path="/detail-pembayaran-jbi/:id" element={<DetailPembayaranPage />} />
 

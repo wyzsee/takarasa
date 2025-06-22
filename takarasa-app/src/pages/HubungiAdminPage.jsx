@@ -62,7 +62,7 @@ export default function Dashboard() {
                         className="bottom-0 h-12 w-full p-[10px] bg-grey-100 text-lg text-white rounded-full py-3 font-semibold ease-in-out duration-300 hover:bg-grey-80"
                         disabled={loading}
                     >
-                        <Link to="">
+                        <Link to="http://wa.me/+6285183091248" target="_blank">
                             {loading ? "Memproses..." : "Hubungi Admin"}
                         </Link>
                     </Button>

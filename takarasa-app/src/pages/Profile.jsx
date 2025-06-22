@@ -1,5 +1,7 @@
+// File: src/pages/Profile.js (SUDAH DIPERBAIKI)
+
 import Navbar from "@/components/ui/Navbar";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
     CaretRight,
     CoinVertical,
@@ -17,15 +19,20 @@ const defaultProfilePic = "/src/assets/img/ppdefault.jpg";
 export default function Profile() {
     const navigate = useNavigate();
     const [user, setUser] = useState({});
-    const [loading, setLoading] = useState(true); // Mulai dengan true
-
+    const [loading, setLoading] = useState(true);
     const [imagePreview, setImagePreview] = useState(defaultProfilePic);
-    
 
     useEffect(() => {
         async function fetchUser() {
+            setLoading(true);
             try {
                 const res = await api.get("/user");
+
+                // ======================================================
+                // TAMBAHKAN BARIS INI UNTUK DEBUGGING
+                console.log("DATA YANG DITERIMA DARI BACKEND:", res.data);
+                // ======================================================
+
                 setUser(res.data);
                 if (res.data.foto_profil) {
                     setImagePreview(
@@ -34,10 +41,8 @@ export default function Profile() {
                 }
             } catch (err) {
                 console.error("Gagal ambil user:", err);
-                // Jika gagal (misal: token tidak valid), mungkin lempar ke login
-                // navigate('/login');
             } finally {
-                setLoading(false); // Set loading ke false setelah selesai (baik sukses maupun gagal)
+                setLoading(false);
             }
         }
         fetchUser();
@@ -53,13 +58,12 @@ export default function Profile() {
             console.error("Gagal logout:", err);
         }
     };
+
     return (
         <>
             <div className="relative max-w-md min-h-screen font-jakarta flex flex-col items-center mx-auto overflow-hidden px-6">
-                {/* Background SVG */}
-                <div className="absolute inset-0 -z-20 pointer-events-none">
-                    {/* ... kode SVG Anda ... */}
-                </div>
+                {/* ... Background SVG Anda ... */}
+                <div className="absolute inset-0 -z-20 pointer-events-none"></div>
 
                 <div className="container flex flex-col items-center justify-center mx-auto gap-8 mt-16 mb-24 h-full">
                     <div className="relative w-full bg-brand-primary flex gap-4 items-center justify-between p-4 rounded-2xl">
@@ -73,22 +77,28 @@ export default function Profile() {
                         <div className="flex gap-2 flex-grow">
                             <div>
                                 <h1 className="text-xl font-bold text-white">
-                                    {user.name ? user.name : "..."}
+                                    {loading ? "..." : user.name}
                                 </h1>
                                 <p className="text-xs text-slate-200">
-                                    {user.email ? user.email : "..."}
+                                    {loading ? "..." : user.email}
                                 </p>
                             </div>
+                            {/* ======================================= */}
+                            {/* BAGIAN YANG DIPERBAIKI ADA DI SINI */}
                             <div className="absolute right-8 flex flex-col justify-center items-center gap-1 rounded-full text-white">
                                 <CoinVertical
                                     size={16}
                                     weight="fill"
                                     className="text-brand-accent"
                                 />
-                                <p className="text-xs font-bold">200 Poin</p>
+                                <p className="text-xs font-bold">
+                                    {loading ? "..." : `${user.total_points} Poin`}
+                                </p>
                             </div>
+                            {/* ======================================= */}
                         </div>
                     </div>
+                    {/* ... Sisa JSX Anda sudah benar ... */}
                     <div className="flex flex-col w-full gap-3">
                         <h1 className="font-semibold text-xl text-grey-100 ">
                             Tentang Akun
@@ -120,7 +130,7 @@ export default function Profile() {
                         <h1 className="font-semibold text-xl text-grey-100 ">
                             Lainnya
                         </h1>
-                        <Link to="/">
+                        <Link to="/ketentuan-layanan">
                             <div className="flex justify-between">
                                 <div className="flex gap-4 items-center">
                                     <ShieldCheck size={24} />
@@ -132,7 +142,7 @@ export default function Profile() {
                             </div>
                         </Link>
                         <div className="border-b border-grey-100 w-full"></div>
-                        <Link to="/">
+                        <Link to="/kebijakan-privasi">
                             <div className="flex justify-between">
                                 <div className="flex gap-4 items-center">
                                     <LockKey size={24} />
@@ -144,14 +154,14 @@ export default function Profile() {
                             </div>
                         </Link>
                         <div className="border-b border-grey-100 w-full"></div>
-                        <Link onClick={handleLogout}>
+                        <div onClick={handleLogout} className="cursor-pointer">
                             <div className="flex justify-between text-error">
                                 <div className="flex gap-4 items-center">
                                     <SignOut size={24} />
                                     <p className="text-sm">Keluar</p>
                                 </div>
                             </div>
-                        </Link>
+                        </div>
                         <div className="border-b border-grey-100 w-full"></div>
                     </div>
                 </div>

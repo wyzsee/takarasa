@@ -3,7 +3,6 @@ import { Link, useNavigate, useParams } from "react-router-dom"; // 1. Import us
 import api from "../api";
 import { Button } from "@/components/ui/button";
 import { CaretLeft } from "@phosphor-icons/react";
-import FotoBambang from "@/assets/img/Bambang.jpg";
 
 // Hapus import gambar statis
 // import FotoBambang from "@/assets/img/Bambang.jpg";
@@ -82,7 +81,7 @@ export default function DetailJBIPage() { // Ubah nama komponen agar sesuai
                     <img
                         className="self-stretch w-full h-56 object-cover rounded-lg"
                         alt={jbiDetail.name}
-                        src={FotoBambang} // Sesuaikan URL backend
+                        src={jbiDetail.image_path} // Sesuaikan URL backend
                     />
                     <div className="flex flex-col gap-3">
                         <h2 className="text-xl font-bold text-gray-800">
