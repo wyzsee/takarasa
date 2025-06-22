@@ -2,7 +2,9 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/ui/Navbar";
 import logo from "@/assets/img/logo.png";
 import animasiHome from "@/assets/img/def_pose.png";
-import bookHome from "@/assets/img/book dashboard icon.png";
+import gathering from "@/assets/img/gatheringdulu.jpg";
+import { Progress } from "@/components/ui/progress";
+
 // Hapus import eventPhoto karena akan diambil dari API
 // import eventPhoto from "@/assets/img/event photo.jpg";
 import { Clock, MapPinLine } from "@phosphor-icons/react";
@@ -49,7 +51,7 @@ export default function Dashboard() {
                 console.error("Gagal ambil user:", err);
             }
         }
-        getUser();
+        fetchData();
     }, []);
 
     // useEffect untuk mengambil data acara
@@ -358,7 +360,7 @@ export default function Dashboard() {
                             <Link to={featuredEvent.link_detail} className="flex flex-col gap-3">
                                 <div className="w-full h-[157px]">
                                     <img
-                                        src={featuredEvent.image_path}
+                                        src={gathering}
                                         className="w-full h-full object-cover object-center rounded-lg"
                                         alt={featuredEvent.title}
                                     />
@@ -379,7 +381,6 @@ export default function Dashboard() {
                                 </div>
                                 <div className="flex relative justify-between items-center">
                                     <p className="w-[70%] text-xs font-normal text-grey-100">
-                                        {/* Memotong deskripsi jika terlalu panjang */}
                                         {featuredEvent.description.length > 80
                                             ? `${featuredEvent.description.substring(0, 80)}...`
                                             : featuredEvent.description

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\LearnMaterial;
 use App\Models\User;
 use App\Models\SignVideo;
 use App\Models\Quiz;
@@ -24,6 +25,8 @@ class DatabaseSeeder extends Seeder
             AcaraSeeder::class,
             CommunitySeeder::class, // Seeder untuk tabel acara
             VoucherSeeder::class,
+            LearnSeeder::class,
+            LearnMaterialSeeder::class,
             // ... seeder lainnya
         ]);
         

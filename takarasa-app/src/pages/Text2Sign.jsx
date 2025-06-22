@@ -45,7 +45,7 @@ export default function Text2Sign() {
 
   return (
     <>
-      <div className="relative max-w-md min-h-screen font-jakarta flex flex-col bg-grey-10 items-center overflow-hidden px-6">
+      <div className="relative mx-auto max-w-md min-h-screen font-jakarta flex flex-col bg-grey-10 items-center overflow-hidden px-6">
         <div className="container flex flex-col items-center mx-auto gap-4 overflow-hidden">
             <div className="flex relative justify-center items-center w-full h-16">
                 <h1 className="text-xl font-semibold text-grey-100">
