@@ -21,6 +21,7 @@ import Text2SignResult from './pages/Text2SignResult';
 import Belajar from "./pages/Belajar";
 import BelajarBahasaIsyaratPage from "./pages/BelajarBahasaIsyaratPage";
 import DetailBelajarBahasaIsyaratPage from "./pages/DetailBelajarBahasaIsyaratPage";
+import KontenBelajarBahasaIsyarat from "./pages/KontenBelajarBahasaIsyarat";
 
 import Kuis from "./pages/Kuis";
 import KuisDetail from "./pages/KuisDetail";
@@ -75,8 +76,12 @@ export default function App() {
                     element={<BelajarBahasaIsyaratPage />}
                 />
                 <Route
-                    path="/detail-belajar-bahasa-isyarat"
+                    path="/detail-belajar-bahasa-isyarat/:id"
                     element={<DetailBelajarBahasaIsyaratPage />}
+                />
+                <Route
+                    path="/konten-belajar-bahasa-isyarat/:id"
+                    element={<KontenBelajarBahasaIsyarat />}
                 />
                 <Route path="/:id/penukaran-poin" element={<PenukaranPoinPage />} />
                 <Route

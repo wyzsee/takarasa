@@ -71,4 +71,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function watchedMaterials() 
+    {
+        return $this->belongsToMany(LearnMaterial::class, 'watched_materials')->withTimestamps();
+    }
+
 }
